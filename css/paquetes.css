@@ -1,0 +1,194 @@
+/* ================= PAQUETES ================= */
+.packages {
+  padding: 6rem 0;
+  background: var(--purple-950);
+}
+
+.packages__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.packages__eyebrow {
+  color: var(--purple-200);
+}
+
+.packages__title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.packages__title em {
+  color: var(--purple-300);
+}
+
+.packages__intro {
+  color: var(--purple-200);
+  margin: 1rem auto 0;
+  max-width: 36rem;
+  line-height: 1.625;
+}
+
+.packages__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* ---------- Tarjeta base (oscura) ---------- */
+.package {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: rgba(88, 28, 135, 0.5);
+  border: 1px solid var(--purple-700);
+}
+
+.package__tag {
+  color: var(--purple-200);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.package__name {
+  font-family: var(--font-display);
+  color: #ffffff;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.package__desc {
+  color: var(--purple-200);
+  font-size: 0.875rem;
+  line-height: 1.625;
+  margin-bottom: 1.5rem;
+}
+
+.package__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.package__list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--purple-200);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Circulo con palomita */
+.package__list li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: var(--purple-700) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%23d8b4fe' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 10px 10px no-repeat;
+}
+
+.package__footer {
+  margin-top: auto;
+}
+
+.package__prices {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.package__old {
+  color: var(--purple-500);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration: line-through;
+}
+
+.package__price {
+  font-family: var(--font-display);
+  color: #ffffff;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+.package__btn {
+  display: block;
+  text-align: center;
+  background: var(--purple-700);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.75rem 0;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.package__btn:hover {
+  background: var(--purple-600);
+}
+
+/* ---------- Tarjeta destacada (blanca) ---------- */
+.package--featured {
+  background: #ffffff;
+  border: 0;
+  box-shadow: 0 0 0 2px var(--purple-400), 0 25px 50px -12px rgba(88, 28, 135, 0.5);
+}
+
+.package__badge {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--purple-500);
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  padding: 0.25rem 1rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.package--featured .package__tag { color: var(--purple-500); }
+.package--featured .package__name { color: var(--purple-950); }
+.package--featured .package__desc { color: var(--purple-600); }
+.package--featured .package__list li { color: var(--purple-700); }
+
+.package--featured .package__list li::before {
+  background: var(--purple-100) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6l3 3 5-5' stroke='%237e22ce' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 10px 10px no-repeat;
+}
+
+.package--featured .package__old { color: var(--purple-400); }
+.package--featured .package__price { color: var(--purple-950); }
+
+/* ---------- Nota al pie ---------- */
+.packages__note {
+  color: var(--purple-200);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (min-width: 768px) {
+  .packages__title { font-size: 3rem; }
+  .packages__grid { grid-template-columns: repeat(3, 1fr); }
+}
