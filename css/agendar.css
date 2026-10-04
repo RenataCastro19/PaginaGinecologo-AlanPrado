@@ -1,0 +1,359 @@
+/* ================= AGENDAR CITA ================= */
+.booking {
+  padding: 5rem 0;
+  background: var(--purple-950);
+}
+
+.booking__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.booking__eyebrow {
+  color: var(--purple-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.booking__title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+}
+
+.booking__title em {
+  color: var(--purple-300);
+}
+
+.booking__intro {
+  color: var(--purple-400);
+  line-height: 1.625;
+  margin-bottom: 2.5rem;
+}
+
+.booking__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.info-item__icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: var(--purple-800);
+  color: var(--purple-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-item__icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.info-item__title {
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+}
+
+.info-item__sub {
+  color: var(--purple-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* ---------- Tarjeta del formulario ---------- */
+.booking-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(59, 7, 100, 0.4);
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--purple-700);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.form-control {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--purple-200);
+  color: var(--purple-950);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color-scheme: light;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control::placeholder {
+  color: var(--purple-300);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--purple-500);
+  box-shadow: 0 0 0 1px var(--purple-300);
+}
+
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+textarea.form-control {
+  resize: none;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Campo "Otro": se muestra solo con CSS cuando se elige esa opcion */
+.other-field {
+  display: none;
+}
+
+.booking-form:has(option[value="Otro"]:checked) .other-field {
+  display: block;
+}
+
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 1rem 0;
+  background: #25d366;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px #bbf7d0, 0 4px 6px -4px #bbf7d0;
+  transition: all 0.2s;
+}
+
+.btn-whatsapp:hover {
+  background: #20be5a;
+}
+
+.btn-whatsapp svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.booking-form__hint {
+  margin-top: -0.5rem;
+  text-align: center;
+  color: var(--purple-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* ================= CONTACTO Y REDES ================= */
+.contact {
+  padding: 5rem 0;
+  background: var(--purple-900);
+}
+
+.contact__inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.contact__title {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.contact__subtitle {
+  color: var(--purple-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.contact-card svg {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.contact-card__label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.contact-card__value {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+/* Activa */
+.contact-card--active {
+  background: rgba(107, 33, 168, 0.6);
+  border-color: var(--purple-600);
+  color: #ffffff;
+}
+
+.contact-card--active:hover {
+  border-color: var(--purple-400);
+}
+
+.contact-card--active svg { color: var(--purple-300); }
+.contact-card--active .contact-card__label { color: var(--purple-300); }
+.contact-card--active .contact-card__value { color: #ffffff; }
+
+/* Proximamente */
+.contact-card--soon {
+  background: rgba(107, 33, 168, 0.2);
+  border-color: var(--purple-800);
+  cursor: default;
+}
+
+.contact-card--soon svg { color: var(--purple-600); }
+.contact-card--soon .contact-card__label { color: var(--purple-600); }
+.contact-card--soon .contact-card__value { color: var(--purple-500); }
+
+/* ================= FOOTER ================= */
+.footer {
+  background: var(--purple-950);
+  border-top: 1px solid var(--purple-800);
+  padding: 2rem 0;
+}
+
+.footer__inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: center;
+}
+
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer__logo {
+  height: 2rem;
+  width: auto;
+  filter: invert(1); /* el logo es negro; sobre el fondo morado oscuro se vuelve blanco */
+}
+.footer__name {
+  font-family: var(--font-display);
+  color: var(--purple-300);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.footer__copy {
+  color: var(--purple-500);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.footer__links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer__links a {
+  color: var(--purple-500);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  transition: color 0.2s;
+}
+
+.footer__links a:hover {
+  color: var(--purple-300);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (min-width: 768px) {
+  .booking__inner { grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .booking__title { font-size: 3rem; }
+
+  .contact__grid { grid-template-columns: repeat(4, 1fr); }
+
+  .footer__inner { flex-direction: row; text-align: left; }
+}
