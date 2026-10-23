@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Prueba</title></head>
+<body>
+  <p>Prueba de conexión: revise la consola del navegador.</p>
+  <script type="module">
+    import { app } from "../js/firebase-config.js";
+    console.log("Firebase conectado al proyecto:", app.options.projectId);
+  </script>
+</body>
+</html>
