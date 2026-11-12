@@ -75,3 +75,42 @@ em {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d8b4fe; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #a855f7; }
+/* ================= CONTENIDO DINÁMICO (Fase 6) ================= */
+
+/* Las secciones y elementos que el panel oculta usan el atributo hidden */
+[hidden] { display: none !important; }
+
+/* Tarjetas de contacto con textos largos (correo, dirección): se ajustan en lugar de desbordar */
+.contact-card, .contact-card > div { min-width: 0; }
+.contact-card__value { overflow-wrap: anywhere; }
+
+/* Con 1 o 2 paquetes o testimonios, las tarjetas se centran en lugar de quedar a la izquierda */
+@media (min-width: 768px) {
+  .packages__grid[data-cantidad="1"], .testimonials__grid[data-cantidad="1"] { grid-template-columns: minmax(0, 23rem); justify-content: center; }
+  .packages__grid[data-cantidad="2"], .testimonials__grid[data-cantidad="2"] { grid-template-columns: repeat(2, minmax(0, 23rem)); justify-content: center; }
+}
+
+/* Sitio en mantenimiento (configuracion.sitioVisible = false) */
+.sitio-mantenimiento .navbar__links,
+.sitio-mantenimiento .navbar__toggle,
+.sitio-mantenimiento .mobile-menu,
+.sitio-mantenimiento .footer__links { display: none !important; }
+
+.mantenimiento {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 8rem 1.5rem 4rem;
+  text-align: center;
+  background: var(--purple-50);
+}
+.mantenimiento__titulo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.15;
+  color: var(--purple-950);
+}
+.mantenimiento__texto { max-width: 32rem; color: var(--purple-700); }

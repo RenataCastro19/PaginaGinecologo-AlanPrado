@@ -9,7 +9,7 @@
   margin: 0 auto;
   padding: 0 1.5rem;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr); /* minmax evita que el formulario ensanche la página en móvil */
   gap: 3.5rem;
   align-items: center;
 }
