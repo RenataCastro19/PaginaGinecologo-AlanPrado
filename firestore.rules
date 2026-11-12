@@ -19,12 +19,12 @@ service cloud.firestore {
     // Contenido que ve el público en la landing
     match /sitio/publicado {
       allow read: if true;
-      allow write: if esAdmin();
+      allow create, update: if esAdmin();   // nunca se borra (la landing se quedaría sin contenido)
     }
 
     // Contenido en edición desde el panel (no es público)
     match /sitio/borrador {
-      allow read, write: if esAdmin();
+      allow read, create, update: if esAdmin();   // nunca se borra
     }
 
     // Copia de cada publicación: se puede crear y consultar, pero nunca modificar ni borrar

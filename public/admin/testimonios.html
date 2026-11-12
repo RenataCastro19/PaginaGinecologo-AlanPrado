@@ -187,7 +187,7 @@
               <button class="boton boton--secundario" type="button" data-accion-lista="editar">Editar</button>
               <button class="boton boton--blanco" type="button" data-accion-lista="eliminar">Eliminar</button>
             </div>
-            <p class="testimonio__estrellas">${estrellas(t.valoracion)} <span>${t.valoracion} de 5 estrellas</span></p>
+            <p class="testimonio__estrellas">${estrellas(t.valoracion)} <span>${Number(t.valoracion) || 0} de 5 estrellas</span></p>
             <p class="testimonio__texto">${escaparHTML(t.comentario)}</p>
             <p class="nota" style="font-size: 11px">Consentimiento: ${t.consentimiento ? "registrado" : "pendiente de documentar"}</p>
           </article>`).join("");
