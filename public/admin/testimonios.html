@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Testimonios | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Testimonios</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Testimonios</h1>
+            <p class="pagina__descripcion">Administra las experiencias de pacientes que aparecen en tu página.</p>
+          </div>
+          <button id="agregarTestimonio" class="boton boton--primario" type="button">Agregar testimonio</button>
+        </div>
+
+        <div class="contadores">
+          <span id="contadorTotal" class="insignia insignia--marca"></span>
+          <span id="contadorInactivos" class="insignia insignia--marca"></span>
+          <span class="nota">Cada cambio se guarda en el borrador al momento.</span>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" novalidate>
+          <div class="filtros tarjeta" style="margin-top: 20px">
+            <label class="campo campo--busqueda">
+              <span class="campo__etiqueta">Buscar testimonio</span>
+              <input id="buscar" class="campo__entrada" type="search" placeholder="Buscar por nombre o comentario" autocomplete="off">
+            </label>
+            <label class="campo campo--seleccion">
+              <span class="campo__etiqueta">Visibilidad</span>
+              <select id="filtro" class="campo__entrada">
+                <option value="todos">Todos los testimonios</option>
+                <option value="activos">Solo activos</option>
+                <option value="inactivos">Solo inactivos</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="lista" class="lista-tarjetas"></div>
+
+          <div class="aviso aviso--info" style="margin-top: 20px">
+            <p class="aviso__titulo">Consentimiento de las pacientes</p>
+            <p>Publica solo testimonios con autorización de la paciente. Puedes registrar la referencia del consentimiento en cada testimonio.</p>
+          </div>
+
+          <div class="barra-acciones">
+            <p class="barra-acciones__estado" data-estado-edicion></p>
+            <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+            <button class="boton boton--primario" type="submit">Guardar cambios</button>
+          </div>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <!-- Editor de testimonio (Figma 3:36061) -->
+  <dialog id="editor" class="dialogo dialogo--editor" aria-labelledby="tituloEditor">
+    <form class="dialogo__formulario">
+      <div class="dialogo__cabecera">
+        <h2 id="tituloEditor" class="dialogo__titulo">Editar testimonio</h2>
+        <button class="dialogo__cerrar" type="button" data-cerrar-dialogo aria-label="Cerrar"></button>
+      </div>
+      <div class="rejilla-trabajo">
+        <div class="columna">
+          <section class="tarjeta">
+            <h3 class="tarjeta__titulo">Datos del testimonio</h3>
+            <div class="tarjeta__cuerpo">
+              <div class="campos-telefono" style="grid-template-columns: minmax(0, 1fr) 150px">
+                <label class="campo">
+                  <span class="campo__etiqueta">Nombre de la autora *</span>
+                  <input id="autora" class="campo__entrada" type="text" required maxlength="60">
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Edad · Opcional</span>
+                  <input id="edad" class="campo__entrada" type="number" min="12" max="110" step="1" inputmode="numeric"
+                         title="Escribe una edad entre 12 y 110, o déjala vacía.">
+                </label>
+              </div>
+              <label class="campo">
+                <span class="campo__etiqueta">Comentario *</span>
+                <textarea id="comentario" class="campo__entrada" rows="3" required maxlength="500"></textarea>
+              </label>
+              <label class="campo campo--seleccion">
+                <span class="campo__etiqueta">Valoración</span>
+                <select id="valoracion" class="campo__entrada">
+                  <option value="5">5 de 5 estrellas</option>
+                  <option value="4">4 de 5 estrellas</option>
+                  <option value="3">3 de 5 estrellas</option>
+                  <option value="2">2 de 5 estrellas</option>
+                  <option value="1">1 de 5 estrellas</option>
+                </select>
+              </label>
+              <label class="interruptor">
+                <input id="visible" type="checkbox" role="switch">
+                Activo · Visible en el sitio
+              </label>
+            </div>
+          </section>
+          <section class="tarjeta">
+            <h3 class="tarjeta__titulo">Consentimiento</h3>
+            <div class="tarjeta__cuerpo">
+              <span id="estadoConsentimiento" class="insignia"></span>
+              <label class="campo">
+                <span class="campo__etiqueta">Registro de consentimiento</span>
+                <input id="referenciaConsentimiento" class="campo__entrada" type="text" maxlength="200" placeholder="Añadir referencia o confirmación">
+                <span class="campo__ayuda">Por ejemplo: «Autorización por WhatsApp, 12/11/2026». No se muestra en la página pública.</span>
+              </label>
+              <label class="interruptor">
+                <input id="consentimiento" type="checkbox" role="switch">
+                Consentimiento registrado
+              </label>
+            </div>
+          </section>
+        </div>
+        <aside class="tarjeta tarjeta--suave vista-previa" aria-label="Vista previa">
+          <h3 class="tarjeta__titulo">Vista previa</h3>
+          <p id="previaEstrellas" class="testimonio__estrellas" aria-hidden="true"></p>
+          <p id="previaComentario" class="testimonio__texto"></p>
+          <p id="previaAutora" class="testimonio__nombre"></p>
+          <p id="previaEdad" class="testimonio__edad"></p>
+          <span id="previaEstado" class="insignia"></span>
+        </aside>
+      </div>
+      <div class="dialogo__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar-dialogo>Cancelar</button>
+        <button class="boton boton--primario" type="submit">Guardar testimonio</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+    import { nuevoId, ordenar, renumerar, abrirEditor, confirmarEliminacion, iniciales, estrellas, ICONO_CERRAR } from "./js/listas.js";
+
+    const { borrador } = await iniciarPanel("testimonios");
+    const $ = (id) => document.getElementById(id);
+    document.querySelectorAll(".dialogo__cerrar").forEach((b) => { b.innerHTML = ICONO_CERRAR; });
+    const normalizar = (t = "") => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+
+    let testimonios = [];
+
+    function dibujar() {
+      const texto = normalizar($("buscar").value.trim());
+      const filtro = $("filtro").value;
+      const visibles = testimonios.filter((t) =>
+        (filtro === "todos" || (filtro === "activos") === Boolean(t.visible)) &&
+        (!texto || normalizar(`${t.autora} ${t.comentario}`).includes(texto)));
+
+      $("lista").innerHTML = visibles.length === 0
+        ? `<p class="tarjeta nota">${testimonios.length === 0 ? "Aún no hay testimonios. Usa «Agregar testimonio»." : "Ningún testimonio coincide con la búsqueda."}</p>`
+        : visibles.map((t) => `
+          <article class="tarjeta testimonio${t.visible ? "" : " testimonio--inactivo"}" data-id="${escaparHTML(t.id)}">
+            <div class="testimonio__cabecera">
+              <div class="testimonio__autora">
+                <span class="avatar" aria-hidden="true">${escaparHTML(iniciales(t.autora))}</span>
+                <div>
+                  <p class="testimonio__nombre">${escaparHTML(t.autora)}</p>
+                  ${t.edad ? `<p class="testimonio__edad">${escaparHTML(t.edad)} años</p>` : ""}
+                </div>
+              </div>
+              <label class="interruptor">
+                <input type="checkbox" role="switch" data-accion-lista="visible" ${t.visible ? "checked" : ""} aria-label="${escaparHTML(t.autora)}: activo">
+                ${t.visible ? "Activo" : "Inactivo"}
+              </label>
+              <button class="boton boton--secundario" type="button" data-accion-lista="editar">Editar</button>
+              <button class="boton boton--blanco" type="button" data-accion-lista="eliminar">Eliminar</button>
+            </div>
+            <p class="testimonio__estrellas">${estrellas(t.valoracion)} <span>${t.valoracion} de 5 estrellas</span></p>
+            <p class="testimonio__texto">${escaparHTML(t.comentario)}</p>
+            <p class="nota" style="font-size: 11px">Consentimiento: ${t.consentimiento ? "registrado" : "pendiente de documentar"}</p>
+          </article>`).join("");
+
+      const activos = testimonios.filter((t) => t.visible).length;
+      $("contadorTotal").textContent = `${plural(testimonios.length, "testimonio", "testimonios")} · ${plural(activos, "activo", "activos")}`;
+      $("contadorInactivos").textContent = plural(testimonios.length - activos, "inactivo", "inactivos");
+    }
+
+    const control = controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "testimonios",
+      valorInicial: ordenar(borrador.testimonios),
+      rellenar: (lista) => { testimonios = ordenar(lista); dibujar(); },
+      leer: () => structuredClone(testimonios)
+    });
+
+    function aplicar() {
+      dibujar();
+      control.revisar();
+      control.guardar();
+    }
+
+    $("buscar").addEventListener("input", dibujar);
+    $("filtro").addEventListener("change", dibujar);
+
+    // ---- Editor ----
+    function actualizarPrevia() {
+      const valor = Number($("valoracion").value);
+      $("previaEstrellas").textContent = estrellas(valor);
+      $("previaComentario").textContent = $("comentario").value.trim() || "Comentario";
+      $("previaAutora").textContent = $("autora").value.trim() || "Nombre de la autora";
+      $("previaEdad").textContent = $("edad").value ? `${$("edad").value} años` : "";
+      $("previaEstado").textContent = $("visible").checked ? "Activo" : "Inactivo";
+      $("previaEstado").className = `insignia ${$("visible").checked ? "insignia--marca" : "insignia--pendiente"}`;
+      const registrado = $("consentimiento").checked;
+      $("estadoConsentimiento").textContent = registrado ? "Consentimiento registrado" : "Pendiente de documentar";
+      $("estadoConsentimiento").className = `insignia ${registrado ? "insignia--exito" : "insignia--pendiente"}`;
+    }
+    $("editor").addEventListener("input", actualizarPrevia);
+    $("editor").addEventListener("change", actualizarPrevia);
+
+    async function editar(id) {
+      const actual = testimonios.find((t) => t.id === id) || null;
+      $("tituloEditor").textContent = actual ? "Editar testimonio" : "Agregar testimonio";
+      const resultado = await abrirEditor({
+        dialogo: $("editor"),
+        rellenar: () => {
+          $("autora").value = actual?.autora ?? "";
+          $("edad").value = actual?.edad ?? "";
+          $("comentario").value = actual?.comentario ?? "";
+          $("valoracion").value = String(actual?.valoracion ?? 5);
+          $("visible").checked = actual ? Boolean(actual.visible) : true;
+          $("referenciaConsentimiento").value = actual?.referenciaConsentimiento ?? "";
+          $("consentimiento").checked = Boolean(actual?.consentimiento);
+          actualizarPrevia();
+        },
+        leer: () => ({
+          autora: $("autora").value.trim(),
+          edad: $("edad").value === "" ? null : Number($("edad").value),
+          comentario: $("comentario").value.trim(),
+          valoracion: Number($("valoracion").value),
+          visible: $("visible").checked,
+          consentimiento: $("consentimiento").checked,
+          referenciaConsentimiento: $("referenciaConsentimiento").value.trim()
+        })
+      });
+      if (!resultado) return;
+      if (actual) Object.assign(actual, resultado);
+      else testimonios.push({ id: nuevoId(resultado.autora), ...resultado, orden: testimonios.length + 1 });
+      aplicar();
+    }
+
+    for (const tipo of ["click", "change"]) {
+      $("lista").addEventListener(tipo, async (evento) => {
+        const boton = evento.target.closest("[data-accion-lista]");
+        if (!boton) return;
+        const t = testimonios.find((x) => x.id === boton.closest("[data-id]").dataset.id);
+        const accion = boton.dataset.accionLista;
+        if (accion === "visible" && evento.type === "change") {
+          t.visible = boton.checked;
+          aplicar();
+        } else if (accion === "editar" && evento.type === "click") {
+          editar(t.id);
+        } else if (accion === "eliminar" && evento.type === "click") {
+          const confirmado = await confirmarEliminacion({
+            titulo: "¿Eliminar este testimonio?",
+            nombre: t.autora,
+            mensaje: `Se eliminará el testimonio de ${t.autora} de tu borrador. Dejará de mostrarse cuando publiques los cambios.`,
+            textoBoton: "Eliminar testimonio"
+          });
+          if (!confirmado) return;
+          testimonios.splice(testimonios.indexOf(t), 1);
+          renumerar(testimonios);
+          aplicar();
+        }
+      });
+    }
+    $("agregarTestimonio").addEventListener("click", () => editar(null));
+  </script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Experiencia y formación | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Experiencia y formación</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Experiencia y formación</h1>
+            <p class="pagina__descripcion">Gestiona las credenciales que acompañan tu presentación profesional en Sobre mí.</p>
+          </div>
+          <button id="agregarEntrada" class="boton boton--primario" type="button">Agregar entrada</button>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <div id="entradas" class="columna" style="--orden-movil: 1"></div>
+
+            <div class="barra-acciones" style="--orden-movil: 4">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Información relacionada">
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 2" aria-labelledby="tituloCertificacion">
+              <h2 id="tituloCertificacion" class="tarjeta__titulo">Certificación pública</h2>
+              <div class="tarjeta__cuerpo">
+                <p id="certificacion" class="cita-decorativa" style="font-size: 18px"></p>
+                <p class="nota">La certificación se edita en Información profesional.</p>
+                <a class="boton boton--blanco" href="informacion-profesional.html" style="justify-self: start">Ver certificación</a>
+              </div>
+            </section>
+            <section class="tarjeta" style="--orden-movil: 3" aria-labelledby="tituloPrecision">
+              <h2 id="tituloPrecision" class="tarjeta__titulo">Completa con precisión</h2>
+              <p class="nota" style="margin-top: 12px">Agrega institución y período solo cuando tengas los datos. Los campos vacíos no se muestran en la página pública.</p>
+            </section>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+    import { nuevoId, ordenar, renumerar, mover, confirmarEliminacion } from "./js/listas.js";
+
+    const { borrador } = await iniciarPanel("experiencia");
+    const $ = (id) => document.getElementById(id);
+
+    const certificacion = borrador.informacionProfesional?.certificacion?.trim();
+    $("certificacion").textContent = certificacion || "Sin certificación capturada";
+
+    const ICONO_BIRRETE = '<svg class="icono" viewBox="0 0 24 24" aria-hidden="true" style="display:block;color:var(--purple-600)"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>';
+
+    let entradas = [];
+
+    function dibujar() {
+      $("entradas").innerHTML = entradas.length === 0
+        ? '<section class="tarjeta"><p class="nota">Aún no hay entradas. Usa «Agregar entrada».</p></section>'
+        : entradas.map((e, i) => `
+          <section class="tarjeta entrada" data-indice="${i}" aria-label="Entrada ${i + 1}">
+            <div class="entrada__cabecera">
+              ${ICONO_BIRRETE}
+              <div>
+                <h2 class="entrada__titulo" data-titulo>${escaparHTML(e.titulo || "Nueva entrada")}</h2>
+                <p class="entrada__subtitulo">Posición ${i + 1} de ${entradas.length}</p>
+              </div>
+              <div class="entrada__herramientas">
+                <span class="insignia insignia--pendiente" data-pendiente ${e.periodo ? "hidden" : ""}>Período pendiente</span>
+                <button class="boton-icono boton-icono--neutro" type="button" data-mover="-1" aria-label="Subir" ${i === 0 ? "disabled" : ""}>↑</button>
+                <button class="boton-icono boton-icono--neutro" type="button" data-mover="1" aria-label="Bajar" ${i === entradas.length - 1 ? "disabled" : ""}>↓</button>
+                <button class="boton-icono" type="button" data-eliminar aria-label="Eliminar entrada">
+                  <img src="img/iconos/eliminar.svg" width="18" height="18" alt="">
+                </button>
+              </div>
+            </div>
+            <div class="campos-2">
+              <label class="campo">
+                <span class="campo__etiqueta">Título o credencial *</span>
+                <input class="campo__entrada" type="text" data-campo="titulo" required maxlength="80" value="${escaparHTML(e.titulo)}">
+              </label>
+              <label class="campo">
+                <span class="campo__etiqueta">Institución</span>
+                <input class="campo__entrada" type="text" data-campo="institucion" maxlength="100" placeholder="Sin proporcionar" value="${escaparHTML(e.institucion)}">
+              </label>
+            </div>
+            <label class="campo">
+              <span class="campo__etiqueta">Período</span>
+              <input class="campo__entrada" type="text" data-campo="periodo" maxlength="40" placeholder="Pendiente · Ejemplo: 2005 – 2011" value="${escaparHTML(e.periodo)}">
+            </label>
+          </section>`).join("");
+    }
+
+    // Lo que se escribe actualiza la lista (y el título de la tarjeta) al momento
+    $("entradas").addEventListener("input", (evento) => {
+      const campo = evento.target.dataset.campo;
+      const tarjeta = evento.target.closest("[data-indice]");
+      if (!campo || !tarjeta) return;
+      const entrada = entradas[Number(tarjeta.dataset.indice)];
+      entrada[campo] = evento.target.value;
+      if (campo === "titulo") tarjeta.querySelector("[data-titulo]").textContent = evento.target.value.trim() || "Nueva entrada";
+      if (campo === "periodo") tarjeta.querySelector("[data-pendiente]").hidden = Boolean(evento.target.value.trim());
+    });
+
+    $("entradas").addEventListener("click", async (evento) => {
+      const tarjeta = evento.target.closest("[data-indice]");
+      if (!tarjeta) return;
+      const indice = Number(tarjeta.dataset.indice);
+      const botonMover = evento.target.closest("[data-mover]");
+      if (botonMover) {
+        mover(entradas, indice, indice + Number(botonMover.dataset.mover));
+        dibujar();
+        control.revisar();
+        $("entradas").querySelector(`[data-indice="${indice + Number(botonMover.dataset.mover)}"] [data-mover="${botonMover.dataset.mover}"]:not(:disabled)`)?.focus();
+        return;
+      }
+      if (evento.target.closest("[data-eliminar]")) {
+        const nombre = entradas[indice].titulo?.trim() || "Nueva entrada";
+        const confirmado = await confirmarEliminacion({
+          titulo: "¿Eliminar esta entrada?",
+          nombre,
+          mensaje: `Se quitará «${nombre}» del formulario. El cambio se guarda en el borrador al presionar Guardar cambios.`,
+          textoBoton: "Eliminar entrada"
+        });
+        if (!confirmado) return;
+        entradas.splice(indice, 1);
+        renumerar(entradas);
+        dibujar();
+        control.revisar();
+      }
+    });
+
+    $("agregarEntrada").addEventListener("click", () => {
+      entradas.push({ id: nuevoId("entrada"), titulo: "", institucion: "", periodo: "", orden: entradas.length + 1 });
+      dibujar();
+      control.revisar();
+      const nueva = $("entradas").lastElementChild;
+      nueva.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      nueva.querySelector('[data-campo="titulo"]').focus();
+    });
+
+    const control = controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "experiencia",
+      valorInicial: ordenar(borrador.experiencia),
+      rellenar: (lista) => { entradas = ordenar(lista); dibujar(); },
+      leer: () => renumerar(entradas.map((e) => ({
+        ...e,
+        titulo: (e.titulo || "").trim(),
+        institucion: (e.institucion || "").trim(),
+        periodo: (e.periodo || "").trim()
+      })))
+    });
+  </script>
+</body>
+</html>

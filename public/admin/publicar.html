@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Revisar y publicar | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .comparacion { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 10px; grid-column: 1 / -1; }
+    .comparacion > div { padding: 12px 14px; border: 1px solid var(--purple-100); border-radius: 12px; font-size: 13px; overflow-wrap: anywhere; }
+    .comparacion > div:last-child { background: var(--purple-50); }
+    .comparacion__rotulo { display: block; margin-bottom: 6px; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--purple-800); }
+    .comparacion p + p { margin-top: 4px; }
+    .comparacion b { font-weight: 600; }
+    @media (max-width: 899px) { .comparacion { grid-template-columns: minmax(0, 1fr); } }
+  </style>
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Revisar y publicar</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Revisar y publicar</h1>
+            <p class="pagina__descripcion">Comprueba tu borrador antes de actualizar la página pública.</p>
+          </div>
+          <span id="estadoGeneral" class="insignia"></span>
+        </div>
+
+        <div id="avisoGeneral" class="aviso pagina__aviso" role="status">
+          <p class="aviso__titulo" id="avisoTitulo"></p>
+          <p id="avisoTexto"></p>
+        </div>
+
+        <div class="rejilla-trabajo rejilla-trabajo--intercalada">
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 1" aria-labelledby="tituloResumen">
+              <h2 id="tituloResumen" class="tarjeta__titulo">Resumen de cambios</h2>
+              <p id="subtituloResumen" class="tarjeta__subtitulo"></p>
+              <div id="cambios" class="tarjeta__cuerpo" style="gap: 0"></div>
+            </section>
+
+            <div id="advertencias" class="aviso aviso--pendiente" style="--orden-movil: 2" hidden>
+              <p class="aviso__titulo">Revisa antes de publicar</p>
+              <ul id="listaAdvertencias" style="margin: 4px 0 0 18px"></ul>
+            </div>
+
+            <section class="tarjeta" style="--orden-movil: 4" aria-labelledby="tituloPasos">
+              <h2 id="tituloPasos" class="tarjeta__titulo">Qué sucede al publicar</h2>
+              <div class="campos-2" style="margin-top: 16px">
+                <div><span class="insignia insignia--marca">1 · Guardar</span><p class="nota" style="margin-top: 8px">Conserva el contenido como borrador. No cambia la página pública.</p></div>
+                <div><span class="insignia insignia--marca">2 · Publicar</span><p class="nota" style="margin-top: 8px">Aplica los cambios revisados y actualiza lo que ven tus visitantes. Se guarda una copia en el historial.</p></div>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 5; justify-content: flex-start">
+              <a class="boton boton--secundario" href="index.html">Volver a editar</a>
+              <button id="publicar" class="boton boton--primario" type="button">Publicar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Estado de la página pública">
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 3" aria-labelledby="tituloAntes">
+              <h2 id="tituloAntes" class="tarjeta__titulo">Versión publicada</h2>
+              <div class="tarjeta__cuerpo">
+                <span id="fechaPublicado" class="insignia insignia--exito"></span>
+                <div id="resumenPublicado" class="resumen"></div>
+                <a class="boton boton--secundario" href="/" target="_blank" rel="noopener" style="justify-self: start">Ver página pública</a>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <dialog id="confirmar" class="dialogo" aria-labelledby="tituloConfirmar">
+    <form method="dialog" class="dialogo__formulario">
+      <h2 id="tituloConfirmar" class="dialogo__titulo">¿Publicar los cambios?</h2>
+      <p id="textoConfirmar"></p>
+      <div class="dialogo__acciones">
+        <button class="boton boton--secundario" value="cancelar">Cancelar</button>
+        <button class="boton boton--primario" value="publicar">Publicar ahora</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { leerBorrador, leerPublicado, seccionesConCambios, sonIguales, formatearFecha, publicarBorrador } from "./js/borrador.js";
+    import { unirEnEspanol } from "./js/listas.js";
+
+    let { borrador } = await iniciarPanel("configuracion");
+    const $ = (id) => document.getElementById(id);
+    let publicado = await leerPublicado().catch(() => null);
+
+    // ---- Nombres legibles de los campos ----
+    const CAMPOS = {
+      nombreCompleto: "Nombre completo", especialidad: "Especialidad", cedulaProfesional: "Cédula profesional",
+      eyebrow: "Frase superior", tituloHero: "Título principal", textoPresentacion: "Texto de presentación",
+      ctaPrincipal: "Botón principal", ctaSecundario: "Botón secundario", biografia: "Biografía",
+      filosofia: "Filosofía de atención", subespecialidad: "Subespecialidad", certificacion: "Certificación",
+      prefijo: "Prefijo", telefono: "Teléfono", whatsapp: "WhatsApp", mostrarTelefono: "Mostrar teléfono",
+      etiquetaPublica: "Etiqueta pública", ciudad: "Ciudad", modalidad: "Modalidad", direccion: "Dirección",
+      direccionVisible: "Mostrar dirección", correo: "Correo", correoVisible: "Mostrar correo", urlMapa: "URL del mapa",
+      instagram: "Instagram", instagramActivo: "Enlace de Instagram activo", facebook: "Facebook", facebookActivo: "Enlace de Facebook activo",
+      textoHorario: "Texto de horario", dias: "Horario por día",
+      sitioVisible: "Sitio visible", tituloPagina: "Título de la página", descripcionBuscadores: "Descripción para buscadores",
+      etiquetaRevision: "Nota interna",
+      nombre: "Nombre", descripcion: "Descripción", visible: "Visible", icono: "Ícono", orden: "Posición",
+      titulo: "Título", institucion: "Institución", periodo: "Período", autora: "Autora", edad: "Edad",
+      comentario: "Comentario", valoracion: "Valoración", consentimiento: "Consentimiento registrado",
+      referenciaConsentimiento: "Registro de consentimiento", uso: "Uso", url: "Archivo", textoAlternativo: "Texto alternativo",
+      etiqueta: "Etiqueta", incluye: "Incluye", precioRegular: "Precio regular", precioPaquete: "Precio del paquete", destacado: "Destacado"
+    };
+    const IGNORAR = new Set(["id", "publicId"]);
+    const nombreDe = (x = {}) => x.nombre || x.titulo || x.autora || (x.url ? decodeURIComponent(x.url.split("/").pop()) : "") || "Elemento";
+
+    const BOOLEANOS = new Set(["visible", "consentimiento", "destacado", "mostrarTelefono", "direccionVisible", "correoVisible",
+      "instagramActivo", "facebookActivo", "sitioVisible", "disponible"]);
+
+    function formatear(valor, campo) {
+      if (campo === "uso") return { inicio: "Inicio", "sobre-mi": "Sobre mí" }[valor] || "Sin asignar";
+      if (BOOLEANOS.has(campo) && (valor === undefined || valor === null)) return "No";
+      if (valor === undefined || valor === null || valor === "") return "Vacío";
+      if (typeof valor === "boolean") return valor ? "Sí" : "No";
+      if (campo === "dias" && Array.isArray(valor)) {
+        return valor.map((d) => `${d.dia.slice(0, 3)} ${d.disponible ? (d.inicio && d.fin ? `${d.inicio}–${d.fin}` : "sin horas") : "sin atención"}`).join(" · ");
+      }
+      if (campo === "uso") return { inicio: "Inicio", "sobre-mi": "Sobre mí" }[valor] || "Sin asignar";
+      if (campo === "url") return decodeURIComponent(String(valor).split("/").pop());
+      if (Array.isArray(valor)) return valor.join(", ");
+      const texto = String(valor);
+      return texto.length > 160 ? `${texto.slice(0, 157)}…` : texto;
+    }
+
+    const camposDistintos = (a = {}, b = {}) =>
+      [...new Set([...Object.keys(a || {}), ...Object.keys(b || {})])]
+        .filter((c) => !IGNORAR.has(c) && !sonIguales(a?.[c] ?? null, b?.[c] ?? null));
+
+    // Una fila del resumen: nombre, sección, insignia y comparación "publicado / borrador"
+    function fila({ titulo, seccion, insignia, antes = [], despues = [] }) {
+      const lineas = (pares) => pares.length ? pares.map(([c, v]) => `<p>${c ? `<b>${escaparHTML(c)}:</b> ` : ""}${escaparHTML(v)}</p>`).join("") : "<p>—</p>";
+      return `
+        <div class="cambio">
+          <div><p class="cambio__nombre">${escaparHTML(titulo)}</p><p class="nota" style="font-size: 12px">${escaparHTML(seccion)}</p></div>
+          <span class="insignia ${insignia === "Eliminado" ? "insignia--error" : insignia === "Agregado" ? "insignia--exito" : "insignia--marca"}">${insignia}</span>
+          <div class="comparacion">
+            <div><span class="comparacion__rotulo">Publicado actual</span>${lineas(antes)}</div>
+            <div><span class="comparacion__rotulo">Borrador</span>${lineas(despues)}</div>
+          </div>
+        </div>`;
+    }
+
+    function filasDeSeccion({ clave, nombre }) {
+      const antes = publicado?.[clave], despues = borrador[clave];
+      // Listas: se comparan elemento por elemento usando su id
+      if (Array.isArray(despues) || Array.isArray(antes)) {
+        const viejos = new Map((antes || []).map((x) => [x.id, x]));
+        const nuevos = new Map((despues || []).map((x) => [x.id, x]));
+        const filas = [];
+        for (const [id, x] of nuevos) {
+          const previo = viejos.get(id);
+          if (!previo) {
+            filas.push(fila({ titulo: nombreDe(x), seccion: nombre, insignia: "Agregado", despues: camposDistintos({}, x).filter((c) => c !== "orden").map((c) => [CAMPOS[c] || c, formatear(x[c], c)]) }));
+            continue;
+          }
+          const distintos = camposDistintos(previo, x);
+          if (!distintos.length) continue;
+          const soloOrden = distintos.length === 1 && distintos[0] === "orden";
+          filas.push(fila({
+            titulo: nombreDe(x), seccion: nombre, insignia: soloOrden ? "Orden" : "Modificado",
+            antes: distintos.map((c) => [CAMPOS[c] || c, formatear(previo[c], c)]),
+            despues: distintos.map((c) => [CAMPOS[c] || c, formatear(x[c], c)])
+          }));
+        }
+        for (const [id, x] of viejos) {
+          if (!nuevos.has(id)) filas.push(fila({ titulo: nombreDe(x), seccion: nombre, insignia: "Eliminado", antes: [["", nombreDe(x)]], despues: [["", "Se quitará de la página"]] }));
+        }
+        return filas;
+      }
+      // Textos sueltos (nota de paquetes)
+      if (typeof despues !== "object" || despues === null) {
+        return [fila({ titulo: nombre, seccion: nombre, insignia: "Modificado", antes: [["", formatear(antes)]], despues: [["", formatear(despues)]] })];
+      }
+      // Objetos: un renglón con todos los campos que cambiaron
+      const distintos = camposDistintos(antes, despues);
+      return [fila({
+        titulo: distintos.map((c) => CAMPOS[c] || c).join(", "), seccion: nombre, insignia: "Modificado",
+        antes: distintos.map((c) => [CAMPOS[c] || c, formatear(antes?.[c], c)]),
+        despues: distintos.map((c) => [CAMPOS[c] || c, formatear(despues?.[c], c)])
+      })];
+    }
+
+    function advertencias() {
+      const lista = [];
+      const sinConsentimiento = (borrador.testimonios || []).filter((t) => t.visible && !t.consentimiento);
+      if (sinConsentimiento.length) lista.push(`${sinConsentimiento.length === 1 ? "Un testimonio activo no tiene" : `${sinConsentimiento.length} testimonios activos no tienen`} el consentimiento registrado (${unirEnEspanol(sinConsentimiento.map((t) => t.autora))}).`);
+      if (!(borrador.galeria || []).some((i) => i.uso === "inicio")) lista.push("No hay una fotografía asignada al inicio de la página.");
+      if (!(borrador.servicios || []).some((s) => s.visible)) lista.push("No hay ningún servicio activo.");
+      if (borrador.configuracion?.sitioVisible === false) lista.push("El sitio está marcado como no visible: al publicar, los visitantes verán el aviso de mantenimiento.");
+      return lista;
+    }
+
+    function resumenPublicado() {
+      const fecha = formatearFecha(publicado?.metadatos?.publicadoEn);
+      $("fechaPublicado").textContent = fecha ? `Publicado · ${fecha}` : publicado ? "Contenido inicial" : "Sin publicar";
+      const p = publicado || {};
+      const contar = (lista = [], filtro = () => true) => lista.filter(filtro).length;
+      $("resumenPublicado").innerHTML = [
+        `${contar(p.servicios, (s) => s.visible)} servicios activos`,
+        `${contar(p.paquetes, (x) => x.visible)} paquetes activos`,
+        `${contar(p.galeria)} imágenes`,
+        `${contar(p.testimonios, (t) => t.visible)} testimonios activos`,
+        p.configuracion?.sitioVisible === false ? "Sitio oculto (mantenimiento)" : "Sitio visible"
+      ].map((t) => `<p class="resumen__dato">${escaparHTML(t)}</p>`).join("");
+    }
+
+    let cambios = [];
+    function dibujar() {
+      cambios = seccionesConCambios(borrador, publicado);
+      const filas = cambios.flatMap(filasDeSeccion);
+      $("cambios").innerHTML = filas.length ? filas.join("") : '<p class="nota">Tu borrador coincide con la página pública. No hay nada por publicar.</p>';
+      $("subtituloResumen").textContent = cambios.length
+        ? `${filas.length} ${filas.length === 1 ? "cambio" : "cambios"} en ${unirEnEspanol(cambios.map((c) => c.nombre))}.`
+        : "Sin cambios pendientes.";
+      $("estadoGeneral").textContent = cambios.length ? "Cambios sin publicar" : "Todo publicado";
+      $("estadoGeneral").className = `insignia ${cambios.length ? "insignia--pendiente" : "insignia--exito"}`;
+      $("publicar").disabled = cambios.length === 0;
+
+      const avisos = advertencias();
+      $("advertencias").hidden = avisos.length === 0;
+      $("listaAdvertencias").innerHTML = avisos.map((a) => `<li>${escaparHTML(a)}</li>`).join("");
+      resumenPublicado();
+    }
+
+    function mostrarAviso(tipo, titulo, texto) {
+      $("avisoGeneral").className = `aviso pagina__aviso aviso--${tipo}`;
+      $("avisoTitulo").textContent = titulo;
+      $("avisoTexto").textContent = texto;
+    }
+
+    dibujar();
+    mostrarAviso("info", "La página pública no ha cambiado", "Este resumen compara tu borrador con lo que ven tus visitantes. Nada se publica hasta que presiones Publicar cambios.");
+
+    $("publicar").addEventListener("click", () => {
+      $("textoConfirmar").textContent = `Se actualizará la página pública con los cambios en ${unirEnEspanol(cambios.map((c) => c.nombre))}. Se guardará una copia en el historial.`;
+      $("confirmar").returnValue = "";
+      $("confirmar").showModal();
+    });
+
+    $("confirmar").addEventListener("close", async () => {
+      if ($("confirmar").returnValue !== "publicar") return;
+      const boton = $("publicar");
+      boton.disabled = true;
+      boton.textContent = "Publicando…";
+      mostrarAviso("info", "Publicando", "Espera un momento mientras se actualiza tu página pública.");
+      try {
+        await publicarBorrador(cambios.map((c) => c.clave));
+        // Se vuelve a leer para mostrar el estado real después de publicar
+        [borrador, publicado] = await Promise.all([leerBorrador(), leerPublicado()]);
+        dibujar();
+        mostrarAviso("exito", "Cambios publicados", "Tu página pública se ha actualizado. No hay cambios de borrador pendientes.");
+      } catch (error) {
+        console.error("Error al publicar:", error);
+        boton.disabled = false;
+        mostrarAviso("error", "No se pudo publicar", "Revisa tu conexión e intenta de nuevo. Tu borrador sigue guardado y la página pública no cambió.");
+      } finally {
+        boton.textContent = "Publicar cambios";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Mi perfil | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Mi perfil</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Mi perfil</h1>
+            <p class="pagina__descripcion">Tu identidad profesional, tal como aparece en la página pública.</p>
+          </div>
+          <span class="insignia" data-estado-edicion="corto"></span>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 2" aria-labelledby="tituloDatos">
+              <h2 id="tituloDatos" class="tarjeta__titulo">Datos personales</h2>
+              <p class="tarjeta__subtitulo">Se muestran en el encabezado y en la sección Sobre mí.</p>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Nombre completo</span>
+                  <input id="nombreCompleto" class="campo__entrada" type="text" autocomplete="name"
+                         required maxlength="80" pattern=".*\S.*" title="Escribe el nombre completo.">
+                  <span class="campo__ayuda">Incluye el título (Dr.) tal como debe aparecer en la página.</span>
+                </label>
+
+                <div class="campos-2">
+                  <label class="campo">
+                    <span class="campo__etiqueta">Especialidad</span>
+                    <input id="especialidad" class="campo__entrada" type="text"
+                           required maxlength="80" pattern=".*\S.*" title="Escribe la especialidad.">
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Cédula profesional</span>
+                    <input id="cedulaProfesional" class="campo__entrada" type="text" inputmode="numeric"
+                           maxlength="10" pattern="[0-9]{5,10}" placeholder="Sin proporcionar"
+                           title="Escribe solo los números de la cédula, sin espacios ni guiones.">
+                    <span class="campo__ayuda">Opcional · Solo números, sin espacios ni guiones.</span>
+                  </label>
+                </div>
+
+                <div class="campo campo--lectura">
+                  <span class="campo__etiqueta">Biografía pública</span>
+                  <p id="biografia" class="campo__valor"></p>
+                  <span class="campo__ayuda">Se edita en Información profesional · sección Sobre mí.</span>
+                </div>
+
+                <div class="tarjeta__acciones">
+                  <a class="boton boton--secundario" href="informacion-profesional.html">Editar información profesional</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 4" aria-labelledby="tituloContacto">
+              <h2 id="tituloContacto" class="tarjeta__titulo">Redes y contacto</h2>
+              <p class="tarjeta__subtitulo">Resumen vinculado a la información de contacto.</p>
+              <div class="tarjeta__cuerpo">
+                <div class="campos-2">
+                  <div class="campo campo--lectura">
+                    <span id="etiquetaTelefono" class="campo__etiqueta">Teléfono</span>
+                    <p id="telefono" class="campo__valor"></p>
+                    <span id="ayudaTelefono" class="campo__ayuda" hidden>No se muestra en la página pública.</span>
+                  </div>
+                  <div class="campo campo--lectura">
+                    <span class="campo__etiqueta">Ubicación</span>
+                    <p id="ubicacion" class="campo__valor"></p>
+                    <span id="modalidad" class="campo__ayuda"></span>
+                  </div>
+                </div>
+                <p id="redes" class="nota"></p>
+                <div class="tarjeta__acciones">
+                  <a class="boton boton--secundario" href="contacto.html">Editar información de contacto</a>
+                </div>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 5">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Fotografía e información relacionada">
+            <section class="tarjeta" style="--orden-movil: 1" aria-labelledby="tituloFoto">
+              <h2 id="tituloFoto" class="tarjeta__titulo">Fotografía de perfil</h2>
+              <div class="tarjeta__cuerpo">
+                <div class="foto-perfil">
+                  <img id="foto" alt="" hidden>
+                  <div id="fotoVacia" class="foto-perfil__vacia">
+                    <img src="img/sin-imagen.svg" width="32" height="32" alt="">
+                    <p id="fotoVaciaTexto">Aún no hay fotografía principal.</p>
+                  </div>
+                </div>
+                <p class="nota">Es la fotografía del inicio de la página pública. Se cambia desde Galería.</p>
+                <a class="boton boton--secundario boton--ancho" href="galeria.html">Cambiar fotografía</a>
+              </div>
+            </section>
+
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 3" aria-labelledby="tituloEnlazada">
+              <h2 id="tituloEnlazada" class="tarjeta__titulo">Información enlazada</h2>
+              <div class="tarjeta__cuerpo">
+                <p class="tarjeta__texto">Biografía, filosofía y credenciales se gestionan en Información profesional y Experiencia y formación.</p>
+                <div class="tarjeta__acciones">
+                  <a class="boton boton--blanco" href="informacion-profesional.html">Ver información profesional</a>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+
+    const { borrador } = await iniciarPanel("perfil");
+    const $ = (id) => document.getElementById(id);
+
+    // Escribe un dato de solo lectura; si está vacío muestra "Sin proporcionar" en gris
+    function mostrarValor(elemento, texto) {
+      const vacio = !texto || !String(texto).trim();
+      elemento.textContent = vacio ? "Sin proporcionar" : texto;
+      elemento.classList.toggle("campo__valor--vacio", vacio);
+    }
+
+    // ---- Datos que se editan en otras pantallas (solo lectura) ----
+
+    mostrarValor($("biografia"), borrador.informacionProfesional?.biografia);
+
+    const contacto = borrador.contacto || {};
+    $("etiquetaTelefono").textContent = contacto.etiquetaPublica ? `Teléfono · ${contacto.etiquetaPublica}` : "Teléfono";
+    mostrarValor($("telefono"), contacto.telefono ? [contacto.prefijo, contacto.telefono].filter(Boolean).join(" · ") : "");
+    $("ayudaTelefono").hidden = contacto.mostrarTelefono !== false;
+    mostrarValor($("ubicacion"), contacto.ciudad);
+    $("modalidad").textContent = contacto.modalidad || "";
+
+    const red = (activa, valor) => (activa && valor ? valor : "Próximamente");
+    $("redes").textContent =
+      `Instagram: ${red(contacto.instagramActivo, contacto.instagram)} · Facebook: ${red(contacto.facebookActivo, contacto.facebook)}`;
+
+    // ---- Fotografía principal: primera imagen de la galería con uso "inicio" ----
+
+    const fotoPrincipal = (borrador.galeria || [])
+      .filter((imagen) => imagen.uso === "inicio" && imagen.url)
+      .sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0))[0];
+
+    if (fotoPrincipal) {
+      const foto = $("foto");
+      foto.addEventListener("load", () => { foto.hidden = false; $("fotoVacia").hidden = true; });
+      foto.addEventListener("error", () => {
+        foto.hidden = true;
+        $("fotoVacia").hidden = false;
+        $("fotoVaciaTexto").textContent = "No se pudo cargar la fotografía.";
+      });
+      foto.alt = fotoPrincipal.textoAlternativo || "Fotografía de perfil";
+      foto.src = fotoPrincipal.url;
+    }
+
+    // ---- Formulario: sección "perfil" del borrador ----
+
+    controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "perfil",
+      valorInicial: borrador.perfil,
+      rellenar: (perfil) => {
+        $("nombreCompleto").value = perfil.nombreCompleto ?? "";
+        $("especialidad").value = perfil.especialidad ?? "";
+        $("cedulaProfesional").value = perfil.cedulaProfesional ?? "";
+      },
+      leer: () => ({
+        nombreCompleto: $("nombreCompleto").value.trim(),
+        especialidad: $("especialidad").value.trim(),
+        cedulaProfesional: $("cedulaProfesional").value.trim()
+      }),
+      // El nombre y la especialidad también aparecen en la barra lateral y el pie
+      alGuardar: (perfil) => {
+        document.querySelector(".lateral__nombre").textContent = perfil.nombreCompleto;
+        document.querySelector(".lateral__especialidad").textContent = perfil.especialidad;
+        $("pie").textContent = `${perfil.nombreCompleto} · Gestión de contenido del sitio`;
+      }
+    });
+  </script>
+</body>
+</html>

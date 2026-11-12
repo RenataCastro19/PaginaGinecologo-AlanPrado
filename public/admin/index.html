@@ -4,34 +4,197 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Panel | Administración del sitio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Dashboard | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<!-- Página provisional: se reemplazará por el Dashboard en la Fase 5 -->
 <body class="verificando">
-  <main style="padding: 40px 24px;">
-    <h1 style="font-family: var(--font-display); color: var(--purple-950);">Panel de administración</h1>
-    <p id="estadoSesion" style="margin-top: 12px;"></p>
-    <button id="btnCerrarSesion" class="boton boton--primario" type="button" style="margin-top: 24px;">Cerrar sesión</button>
-  </main>
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Inicio</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 id="saludo" class="pagina__titulo">Hola</h1>
+            <p class="pagina__descripcion">Un espacio para cuidar la información que tus pacientes encuentran en tu sitio.</p>
+          </div>
+          <a class="boton boton--secundario" href="/" target="_blank" rel="noopener">Ver página pública</a>
+        </div>
+
+        <section class="banner" aria-labelledby="estadoTitulo">
+          <div>
+            <h2 id="estadoTitulo" class="banner__titulo"></h2>
+            <p id="estadoTexto" class="banner__texto"></p>
+          </div>
+          <div class="banner__acciones">
+            <span id="estadoInsignia" class="insignia"></span>
+            <a id="estadoBoton" class="boton boton--blanco" href="publicar.html" hidden>Revisar y publicar</a>
+          </div>
+        </section>
+
+        <div class="indicadores">
+          <a class="tarjeta indicador acceso-indicador" href="servicios.html" style="text-decoration: none; color: inherit">
+            <span id="numServicios" class="indicador__valor"></span>
+            <span class="testimonio__nombre">Servicios activos</span>
+            <span id="detalleServicios" class="indicador__etiqueta"></span>
+          </a>
+          <a class="tarjeta indicador" href="galeria.html" style="text-decoration: none; color: inherit">
+            <span id="numImagenes" class="indicador__valor"></span>
+            <span class="testimonio__nombre">Imágenes</span>
+            <span id="detalleImagenes" class="indicador__etiqueta"></span>
+          </a>
+          <a class="tarjeta indicador" href="testimonios.html" style="text-decoration: none; color: inherit">
+            <span id="numTestimonios" class="indicador__valor"></span>
+            <span class="testimonio__nombre">Testimonios activos</span>
+            <span id="detalleTestimonios" class="indicador__etiqueta"></span>
+          </a>
+        </div>
+
+        <div class="rejilla-trabajo">
+          <div class="columna">
+            <section class="tarjeta" aria-labelledby="tituloAccesos">
+              <h2 id="tituloAccesos" class="tarjeta__titulo">Accesos rápidos</h2>
+              <div class="tarjeta__acciones" style="margin-top: 16px">
+                <a class="boton boton--secundario" href="perfil.html">Editar mi perfil</a>
+                <a class="boton boton--secundario" href="servicios.html">Gestionar servicios</a>
+                <a class="boton boton--secundario" href="galeria.html">Subir imágenes</a>
+                <a class="boton boton--secundario" href="horarios.html">Horarios</a>
+              </div>
+            </section>
+
+            <div class="pagina__cabecera" style="margin-top: 4px">
+              <h2 class="tarjeta__titulo">Así se ve tu página</h2>
+              <span class="insignia insignia--marca">Vista de lo publicado</span>
+            </div>
+            <section class="tarjeta previa-sitio" aria-label="Vista previa del inicio de la página pública">
+              <div class="previa-sitio__barra">
+                <p id="previaNombre" class="previa-sitio__nombre"></p>
+                <p id="previaEspecialidad" class="previa-sitio__especialidad"></p>
+              </div>
+              <div class="previa-sitio__hero">
+                <div>
+                  <p id="previaEyebrow" class="previa-sitio__eyebrow"></p>
+                  <p id="previaTitulo" class="previa-sitio__titulo"></p>
+                  <p id="previaTexto" class="previa-sitio__texto"></p>
+                  <div class="tarjeta__acciones" style="margin-top: 16px" aria-hidden="true">
+                    <span id="previaCta1" class="boton boton--primario"></span>
+                    <span id="previaCta2" class="boton boton--secundario"></span>
+                  </div>
+                </div>
+                <div id="previaFoto" class="previa-sitio__foto"></div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="columna" aria-label="Pendientes">
+            <section class="tarjeta tarjeta--suave" aria-labelledby="tituloPendientes">
+              <h2 id="tituloPendientes" class="tarjeta__titulo">Por completar</h2>
+              <p class="tarjeta__subtitulo">Datos que aún no se han capturado.</p>
+              <div class="tarjeta__cuerpo">
+                <span id="insigniaPendientes" class="insignia"></span>
+                <div id="pendientes" class="pendientes"></div>
+                <a class="boton boton--secundario boton--ancho" href="configuracion.html">Revisar configuración</a>
+              </div>
+            </section>
+            <section class="tarjeta" aria-labelledby="tituloConfianza">
+              <h2 id="tituloConfianza" class="tarjeta__titulo">Publica con confianza</h2>
+              <p class="nota" style="margin-top: 12px">Guardar conserva un borrador. Publicar actualiza la página que ven tus visitantes.</p>
+            </section>
+          </aside>
+        </div>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
 
   <script type="module">
-    import { protegerPagina, cerrarSesion } from "./js/auth.js";
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { leerPublicado, seccionesConCambios, formatearFecha } from "./js/borrador.js";
 
-    const { usuario, administrador } = await protegerPagina();
-    document.getElementById("estadoSesion").textContent =
-      `Sesión activa: ${administrador.nombre} (${usuario.email})`;
+    const { administrador, borrador } = await iniciarPanel("inicio");
+    const $ = (id) => document.getElementById(id);
+    const publicado = await leerPublicado().catch(() => null);
 
-    const botonCerrar = document.getElementById("btnCerrarSesion");
-    botonCerrar.addEventListener("click", async () => {
-      botonCerrar.disabled = true;
-      botonCerrar.textContent = "Cerrando sesión…";
-      if (!(await cerrarSesion())) {
-        botonCerrar.disabled = false;
-        botonCerrar.textContent = "Cerrar sesión";
-      }
-    });
+    // ---- Saludo: "Dr. Alan Guillermo" o el primer nombre ----
+    const palabras = (administrador.nombre || "").trim().split(/\s+/);
+    const saludo = /^dra?\.?$/i.test(palabras[0]) ? palabras.slice(0, 3).join(" ") : palabras[0];
+    $("saludo").textContent = saludo ? `Hola, ${saludo}` : "Hola";
+
+    // ---- Estado de publicación ----
+    const cambios = seccionesConCambios(borrador, publicado);
+    const oculto = publicado?.configuracion?.sitioVisible === false;
+    const fechaPublicacion = formatearFecha(publicado?.metadatos?.publicadoEn);
+    const fechaEdicion = formatearFecha(borrador.metadatos?.actualizadoEn);
+    if (!publicado) {
+      $("estadoTitulo").textContent = "Tu sitio aún no está publicado";
+      $("estadoTexto").textContent = "Revisa el contenido y publícalo cuando esté listo.";
+    } else if (cambios.length) {
+      $("estadoTitulo").textContent = `Tienes cambios sin publicar en ${cambios.length} ${cambios.length === 1 ? "sección" : "secciones"}`;
+      $("estadoTexto").textContent = `${cambios.map((c) => c.nombre).join(", ")}${fechaEdicion ? ` · Última edición: ${fechaEdicion}` : ""}`;
+    } else {
+      $("estadoTitulo").textContent = oculto ? "Tu sitio está publicado, pero oculto" : "Tu sitio está publicado";
+      $("estadoTexto").textContent = fechaPublicacion ? `Última publicación: ${fechaPublicacion}` : "Muestra el contenido inicial de la página.";
+    }
+    $("estadoInsignia").textContent = !publicado ? "Sin publicar" : cambios.length ? "Cambios pendientes" : oculto ? "Oculto" : "Publicado";
+    $("estadoInsignia").className = `insignia ${publicado && !cambios.length && !oculto ? "insignia--exito" : "insignia--pendiente"}`;
+    $("estadoBoton").hidden = cambios.length === 0;
+
+    // ---- Conteos (del borrador) ----
+    const servicios = borrador.servicios || [], galeria = borrador.galeria || [], testimonios = borrador.testimonios || [];
+    const activos = servicios.filter((s) => s.visible).length;
+    $("numServicios").textContent = activos;
+    $("detalleServicios").textContent = activos === servicios.length ? "Todos visibles en el sitio" : `${servicios.length - activos} ocultos`;
+    $("numImagenes").textContent = galeria.length;
+    const asignadas = ["inicio", "sobre-mi"].filter((u) => galeria.some((i) => i.uso === u)).length;
+    $("detalleImagenes").textContent = `${asignadas} de 2 secciones con foto`;
+    const testimoniosActivos = testimonios.filter((t) => t.visible);
+    $("numTestimonios").textContent = testimoniosActivos.length;
+    const sinConsentimiento = testimoniosActivos.filter((t) => !t.consentimiento).length;
+    $("detalleTestimonios").textContent = sinConsentimiento ? `${sinConsentimiento} sin consentimiento registrado` : "Con consentimiento registrado";
+
+    // ---- Por completar ----
+    const contacto = borrador.contacto || {}, horarios = borrador.horarios || {};
+    const tieneHoras = (horarios.dias || []).some((d) => d.disponible && d.inicio && d.fin);
+    const pendientes = [
+      !borrador.perfil?.cedulaProfesional && { titulo: "Cédula profesional", texto: "Añade el número de cédula", pagina: "perfil.html" },
+      !tieneHoras && { titulo: "Horario de consulta", texto: [horarios.etiquetaPublica, horarios.textoHorario].filter(Boolean).join(" · ") || "Sin definir", pagina: "horarios.html" },
+      asignadas < 2 && { titulo: "Fotografías del sitio", texto: `${2 - asignadas} ${asignadas === 1 ? "sección" : "secciones"} sin foto asignada`, pagina: "galeria.html" },
+      (!contacto.direccion || !contacto.correo) && { titulo: "Datos de contacto", texto: [!contacto.direccion && "Dirección", !contacto.correo && "correo"].filter(Boolean).join(" y ") + " pendientes", pagina: "contacto.html" },
+      !borrador.configuracion?.descripcionBuscadores && { titulo: "Descripción para buscadores", texto: "Mejora cómo aparece tu página en Google", pagina: "configuracion.html" },
+      sinConsentimiento > 0 && { titulo: "Consentimiento de testimonios", texto: `${sinConsentimiento} por documentar`, pagina: "testimonios.html" }
+    ].filter(Boolean);
+    $("pendientes").innerHTML = pendientes.length
+      ? pendientes.map((p) => `
+        <a class="pendiente" href="${p.pagina}">
+          <span class="pendiente__marca" aria-hidden="true"></span>
+          <span class="pendiente__titulo">${escaparHTML(p.titulo)}</span>
+          <span class="pendiente__texto">${escaparHTML(p.texto)}</span>
+        </a>`).join("")
+      : '<p class="nota">Todo está completo.</p>';
+    $("insigniaPendientes").textContent = pendientes.length ? `${pendientes.length} pendientes` : "Completo";
+    $("insigniaPendientes").className = `insignia ${pendientes.length ? "insignia--pendiente" : "insignia--exito"}`;
+
+    // ---- Vista previa del inicio publicado ----
+    const fuente = publicado || borrador;
+    const info = fuente.informacionProfesional || {};
+    $("previaNombre").textContent = fuente.perfil?.nombreCompleto || "";
+    $("previaEspecialidad").textContent = fuente.perfil?.especialidad || "";
+    $("previaEyebrow").textContent = info.eyebrow || "";
+    $("previaTitulo").textContent = info.tituloHero || "";
+    $("previaTexto").textContent = info.textoPresentacion || "";
+    $("previaCta1").textContent = info.ctaPrincipal || "";
+    $("previaCta2").textContent = info.ctaSecundario || "";
+    const foto = (fuente.galeria || []).find((i) => i.uso === "inicio" && i.url);
+    $("previaFoto").innerHTML = foto
+      ? `<img src="${escaparHTML(foto.url)}" alt="${escaparHTML(foto.textoAlternativo || "")}">`
+      : '<div class="foto-perfil__vacia"><img src="img/sin-imagen.svg" width="32" height="32" alt=""><p>Sin fotografía</p></div>';
   </script>
 </body>
 </html>

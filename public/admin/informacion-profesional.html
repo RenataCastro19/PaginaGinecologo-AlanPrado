@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Información profesional | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Información profesional</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Información profesional</h1>
+            <p class="pagina__descripcion">Edita el contenido que presenta tu práctica en la página pública.</p>
+          </div>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 2" aria-labelledby="tituloPresentacion">
+              <h2 id="tituloPresentacion" class="tarjeta__titulo">Presentación principal</h2>
+              <p class="tarjeta__subtitulo">Ubicación pública: Inicio · parte superior de la página.</p>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Frase superior</span>
+                  <input id="eyebrow" class="campo__entrada" type="text" required maxlength="60" pattern=".*\S.*"
+                         title="Escribe la frase que aparece sobre el título.">
+                  <span class="campo__ayuda">Texto breve que aparece sobre el título principal.</span>
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Título principal</span>
+                  <input id="tituloHero" class="campo__entrada" type="text" required maxlength="80" pattern=".*\S.*"
+                         title="Escribe el título principal.">
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Texto de presentación</span>
+                  <textarea id="textoPresentacion" class="campo__entrada" rows="3" required maxlength="300"></textarea>
+                </label>
+                <div class="campos-2">
+                  <label class="campo">
+                    <span class="campo__etiqueta">Botón principal</span>
+                    <input id="ctaPrincipal" class="campo__entrada" type="text" required maxlength="30" pattern=".*\S.*"
+                           title="Escribe el texto del botón principal.">
+                    <span class="campo__ayuda">Lleva al formulario para agendar cita.</span>
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Botón secundario</span>
+                    <input id="ctaSecundario" class="campo__entrada" type="text" required maxlength="30" pattern=".*\S.*"
+                           title="Escribe el texto del botón secundario.">
+                    <span class="campo__ayuda">Lleva a la sección Sobre mí.</span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 3" aria-labelledby="tituloSobreMi">
+              <h2 id="tituloSobreMi" class="tarjeta__titulo">Sobre mí</h2>
+              <p class="tarjeta__subtitulo">Ubicación pública: sección Sobre mí.</p>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Biografía</span>
+                  <textarea id="biografia" class="campo__entrada" rows="4" required maxlength="900"></textarea>
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Filosofía de atención</span>
+                  <textarea id="filosofia" class="campo__entrada" rows="4" required maxlength="900"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 4" aria-labelledby="tituloCertificacion">
+              <h2 id="tituloCertificacion" class="tarjeta__titulo">Especialidad y certificación</h2>
+              <div class="tarjeta__cuerpo">
+                <div class="campos-2">
+                  <div class="campo campo--lectura">
+                    <span class="campo__etiqueta">Especialidad</span>
+                    <p id="especialidad" class="campo__valor"></p>
+                    <span class="campo__ayuda">Se edita en <a class="enlace" href="perfil.html">Mi perfil</a>.</span>
+                  </div>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Subespecialidad</span>
+                    <input id="subespecialidad" class="campo__entrada" type="text" maxlength="80" placeholder="Sin proporcionar">
+                    <span class="campo__ayuda">Opcional.</span>
+                  </label>
+                </div>
+                <label class="campo">
+                  <span class="campo__etiqueta">Certificación</span>
+                  <input id="certificacion" class="campo__entrada" type="text" maxlength="120" placeholder="Sin proporcionar">
+                  <span class="campo__ayuda">Opcional · Escríbela tal como aparece en tu documento. Si la dejas vacía, no se muestra.</span>
+                </label>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 6">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Ayuda">
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 5" aria-labelledby="tituloDonde">
+              <h2 id="tituloDonde" class="tarjeta__titulo">Dónde se publica</h2>
+              <div class="tarjeta__cuerpo">
+                <span class="insignia insignia--marca">Contenido del sitio</span>
+                <p class="nota">La presentación aparece en la parte superior de la página de inicio. La biografía, la filosofía y la certificación aparecen en Sobre mí.</p>
+                <p class="cita-decorativa">Una atención con calidez humana.</p>
+              </div>
+            </section>
+
+            <div class="aviso" data-aviso-edicion role="status" style="--orden-movil: 1">
+              <p class="aviso__titulo" data-aviso-titulo></p>
+              <p data-aviso-texto></p>
+            </div>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+
+    const { borrador } = await iniciarPanel("informacion-profesional");
+    const $ = (id) => document.getElementById(id);
+
+    // La especialidad pertenece a "perfil": aquí solo se muestra
+    const especialidad = borrador.perfil?.especialidad?.trim();
+    $("especialidad").textContent = especialidad || "Sin proporcionar";
+    $("especialidad").classList.toggle("campo__valor--vacio", !especialidad);
+
+    const CAMPOS = [
+      "eyebrow", "tituloHero", "textoPresentacion", "ctaPrincipal", "ctaSecundario",
+      "biografia", "filosofia", "subespecialidad", "certificacion"
+    ];
+
+    controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "informacionProfesional",
+      valorInicial: borrador.informacionProfesional,
+      rellenar: (info) => {
+        CAMPOS.forEach((campo) => { $(campo).value = info[campo] ?? ""; });
+      },
+      leer: () => Object.fromEntries(CAMPOS.map((campo) => [campo, $(campo).value.trim()]))
+    });
+  </script>
+</body>
+</html>

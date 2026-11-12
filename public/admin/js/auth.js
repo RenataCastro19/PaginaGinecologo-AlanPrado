@@ -22,9 +22,10 @@ function irAlLogin(motivo) {
 // Verifica que haya una sesión activa de un administrador.
 // - Si no hay sesión, envía al login.
 // - Si la cuenta no está en administradores, cierra la sesión y envía al login.
-// - Si todo es correcto, muestra la página y devuelve { usuario, administrador }.
+// - Si todo es correcto, devuelve { usuario, administrador } y muestra la página
+//   (con { mostrar: false } la página sigue oculta, para que quien llama la muestre al terminar de dibujarla).
 // El observador queda activo: si la sesión se cierra en otra pestaña, esta página también vuelve al login.
-export function protegerPagina() {
+export function protegerPagina({ mostrar = true } = {}) {
   return new Promise((resolver) => {
     let verificada = false;
 
@@ -44,7 +45,7 @@ export function protegerPagina() {
           return;
         }
         verificada = true;
-        document.body.classList.remove("verificando");
+        if (mostrar) document.body.classList.remove("verificando");
         resolver({ usuario, administrador });
       } catch (error) {
         console.error("Error al verificar la sesión:", error);
@@ -64,7 +65,7 @@ export async function cerrarSesion() {
   } catch (error) {
     cierreVoluntario = false;
     console.error("Error al cerrar la sesión:", error);
-    alert("No fue posible cerrar la sesión. Verifique su conexión e intente de nuevo.");
+    alert("No fue posible cerrar la sesión. Revisa tu conexión e intenta de nuevo.");
     return false;
   }
 }

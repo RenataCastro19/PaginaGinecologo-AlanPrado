@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Horarios de atención | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Horarios de atención</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Horarios de atención</h1>
+            <p class="pagina__descripcion">Configura la información pública de disponibilidad; no es una agenda de citas.</p>
+          </div>
+          <span id="estadoHoras" class="insignia"></span>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 1" aria-labelledby="tituloSemana">
+              <h2 id="tituloSemana" class="tarjeta__titulo">Disponibilidad semanal</h2>
+              <p class="tarjeta__subtitulo">Deja las horas vacías si aún no están definidas; se mostrará el texto de horario.</p>
+              <div class="tarjeta__cuerpo">
+                <div class="horario">
+                  <div class="horario__fila horario__fila--cabecera" aria-hidden="true">
+                    <span>Día</span><span>Disponibilidad</span><span>Desde</span><span>Hasta</span>
+                  </div>
+                  <div id="dias"></div>
+                </div>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 4">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Texto público">
+            <section class="tarjeta" style="--orden-movil: 2" aria-labelledby="tituloTexto">
+              <h2 id="tituloTexto" class="tarjeta__titulo">Texto público</h2>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Etiqueta pública</span>
+                  <input id="etiquetaPublica" class="campo__entrada" type="text" required maxlength="40"
+                         title="Escribe los días de atención, por ejemplo Lun–Sáb.">
+                  <span class="campo__ayuda">Ejemplo: Lun–Sáb</span>
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Texto de horario</span>
+                  <input id="textoHorario" class="campo__entrada" type="text" required maxlength="80"
+                         title="Escribe el horario tal como debe aparecer, por ejemplo 9:00 a 18:00.">
+                  <span class="campo__ayuda">Ejemplo: 9:00 a 18:00 · o «Horario a confirmar»</span>
+                </label>
+                <div class="campo campo--lectura">
+                  <span class="campo__etiqueta">Modalidad y ubicación</span>
+                  <p id="modalidadUbicacion" class="campo__valor"></p>
+                  <span class="campo__ayuda">Se editan en <a class="enlace" href="contacto.html">Información de contacto</a>.</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 3" aria-labelledby="tituloPublicado">
+              <h2 id="tituloPublicado" class="tarjeta__titulo">Publicado actualmente</h2>
+              <div class="tarjeta__cuerpo">
+                <span id="estadoPublicado" class="insignia"></span>
+                <div class="resumen">
+                  <p id="publicadoEtiqueta" class="resumen__lugar"></p>
+                  <p id="publicadoTexto" class="resumen__dato" style="color: var(--purple-700)"></p>
+                </div>
+                <p class="nota">Guardar crea un borrador. El sitio conserva este texto hasta que publiques los cambios.</p>
+              </div>
+            </section>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { controlarFormulario, leerPublicado } from "./js/borrador.js";
+
+    const { borrador } = await iniciarPanel("horarios");
+    const $ = (id) => document.getElementById(id);
+    const contenedorDias = $("dias");
+
+    const contacto = borrador.contacto || {};
+    $("modalidadUbicacion").textContent = [contacto.modalidad, contacto.ciudad].filter(Boolean).join(" · ") || "Sin proporcionar";
+
+    // ---- Lo que está publicado hoy ----
+    const publicado = (await leerPublicado().catch(() => null))?.horarios;
+    const tieneHoras = (dias = []) => dias.some((d) => d.disponible && d.inicio && d.fin);
+    if (publicado) {
+      $("publicadoEtiqueta").textContent = publicado.etiquetaPublica || "";
+      $("publicadoTexto").textContent = publicado.textoHorario || "";
+      $("estadoPublicado").textContent = tieneHoras(publicado.dias) ? "Con horas definidas" : "Sin horas definidas";
+      $("estadoPublicado").classList.add(tieneHoras(publicado.dias) ? "insignia--exito" : "insignia--pendiente");
+    } else {
+      $("estadoPublicado").textContent = "Aún no publicado";
+      $("estadoPublicado").classList.add("insignia--pendiente");
+    }
+
+    // ---- Filas por día ----
+    function dibujarDias(dias) {
+      contenedorDias.innerHTML = dias.map((d, i) => {
+        const dia = escaparHTML(d.dia);
+        return `
+          <div class="horario__fila" data-indice="${i}">
+            <span class="horario__dia">${dia}</span>
+            <label class="interruptor">
+              <input type="checkbox" role="switch" data-campo="disponible" aria-label="${dia}: disponible">
+              <span data-texto-disponible></span>
+            </label>
+            <label class="campo">
+              <span class="campo__etiqueta">Inicio</span>
+              <input class="campo__entrada" type="time" step="900" data-campo="inicio" aria-label="${dia}: hora de inicio">
+            </label>
+            <label class="campo">
+              <span class="campo__etiqueta">Fin</span>
+              <input class="campo__entrada" type="time" step="900" data-campo="fin" aria-label="${dia}: hora de fin">
+            </label>
+          </div>`;
+      }).join("");
+      dias.forEach((d, i) => {
+        const fila = contenedorDias.children[i];
+        fila.querySelector('[data-campo="disponible"]').checked = Boolean(d.disponible);
+        fila.querySelector('[data-campo="inicio"]').value = d.inicio || "";
+        fila.querySelector('[data-campo="fin"]').value = d.fin || "";
+      });
+      actualizarFilas();
+    }
+
+    // Si el día no tiene atención, las horas se deshabilitan (se conservan por si se reactiva)
+    function actualizarFilas() {
+      [...contenedorDias.children].forEach((fila) => {
+        const disponible = fila.querySelector('[data-campo="disponible"]').checked;
+        fila.querySelector("[data-texto-disponible]").textContent = disponible ? "Disponible" : "Sin atención";
+        fila.querySelectorAll('input[type="time"]').forEach((hora) => { hora.disabled = !disponible; });
+      });
+      const definido = tieneHoras(leerDias());
+      $("estadoHoras").textContent = definido ? "Horas definidas" : "Horas pendientes";
+      $("estadoHoras").className = `insignia ${definido ? "insignia--exito" : "insignia--pendiente"}`;
+    }
+
+    function leerDias() {
+      return [...contenedorDias.children].map((fila, i) => ({
+        dia: diasOriginales[i].dia,
+        disponible: fila.querySelector('[data-campo="disponible"]').checked,
+        inicio: fila.querySelector('[data-campo="inicio"]').value,
+        fin: fila.querySelector('[data-campo="fin"]').value
+      }));
+    }
+
+    // En un día disponible: o ambas horas vacías (pendiente) o ambas llenas, y fin después de inicio
+    function validarHoras() {
+      [...contenedorDias.children].forEach((fila) => {
+        const inicio = fila.querySelector('[data-campo="inicio"]');
+        const fin = fila.querySelector('[data-campo="fin"]');
+        inicio.setCustomValidity(""); fin.setCustomValidity("");
+        if (inicio.disabled) return;
+        if (inicio.value && !fin.value) fin.setCustomValidity("Completa la hora de fin o deja ambas vacías.");
+        else if (!inicio.value && fin.value) inicio.setCustomValidity("Completa la hora de inicio o deja ambas vacías.");
+        else if (inicio.value && fin.value && fin.value <= inicio.value) fin.setCustomValidity("La hora de fin debe ser posterior a la de inicio.");
+      });
+    }
+
+    const diasOriginales = borrador.horarios?.dias || [];
+    $("formulario").addEventListener("change", actualizarFilas);
+
+    controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "horarios",
+      valorInicial: borrador.horarios,
+      rellenar: (h) => {
+        $("etiquetaPublica").value = h.etiquetaPublica ?? "";
+        $("textoHorario").value = h.textoHorario ?? "";
+        dibujarDias(h.dias || []);
+      },
+      leer: () => ({
+        etiquetaPublica: $("etiquetaPublica").value.trim(),
+        textoHorario: $("textoHorario").value.trim(),
+        dias: leerDias()
+      }),
+      validar: validarHoras
+    });
+  </script>
+</body>
+</html>

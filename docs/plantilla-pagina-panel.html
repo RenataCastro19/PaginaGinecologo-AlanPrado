@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+  PLANTILLA DE PÁGINA DEL PANEL
+  Copiar este archivo a public/admin/<nombre>.html y reemplazar lo marcado con "CAMBIAR".
+  Regla: la página solo importa desde ./js/ (nunca desde gstatic.com).
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CAMBIAR Título | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / CAMBIAR</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">CAMBIAR Título</h1>
+            <p class="pagina__descripcion">CAMBIAR Descripción breve de la pantalla.</p>
+          </div>
+          <span class="insignia" data-estado-edicion="corto"></span>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo" novalidate>
+          <div class="columna">
+            <section class="tarjeta">
+              <h2 class="tarjeta__titulo">CAMBIAR Bloque</h2>
+              <p class="tarjeta__subtitulo">CAMBIAR Dónde se muestra en la página pública.</p>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">CAMBIAR Etiqueta</span>
+                  <!-- Validación nativa: required, maxlength, pattern=".*\S.*" (no solo espacios), title = mensaje -->
+                  <input id="campoEjemplo" class="campo__entrada" type="text" required maxlength="120" pattern=".*\S.*" title="CAMBIAR Mensaje de error.">
+                  <span class="campo__ayuda">CAMBIAR Ayuda opcional.</span>
+                </label>
+              </div>
+            </section>
+
+            <div class="barra-acciones">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna">
+            <section class="tarjeta tarjeta--suave">
+              <h2 class="tarjeta__titulo">CAMBIAR Ayuda</h2>
+              <p class="tarjeta__subtitulo">Guardar no publica automáticamente.</p>
+            </section>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+
+    // CAMBIAR: clave de la página en el menú (ver MENU en js/layout.js)
+    const { borrador } = await iniciarPanel("CAMBIAR");
+
+    controlarFormulario({
+      formulario: document.getElementById("formulario"),
+      seccion: "CAMBIAR",                         // campo del borrador que edita esta pantalla
+      valorInicial: borrador.CAMBIAR,
+      rellenar: (valor) => {                      // del objeto al formulario
+        document.getElementById("campoEjemplo").value = valor.ejemplo ?? "";
+      },
+      leer: () => ({                              // del formulario al objeto
+        ejemplo: document.getElementById("campoEjemplo").value.trim()
+      }),
+      alGuardar: (valor) => {}                    // opcional: actualizar otras partes de la página
+    });
+  </script>
+</body>
+</html>

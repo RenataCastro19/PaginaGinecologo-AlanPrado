@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Información de contacto | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Información de contacto</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Información de contacto</h1>
+            <p class="pagina__descripcion">Facilita que tus visitantes encuentren tus canales de atención y ubicación.</p>
+          </div>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 2" aria-labelledby="tituloLlamadas">
+              <h2 id="tituloLlamadas" class="tarjeta__titulo">Llamadas y WhatsApp</h2>
+              <p class="tarjeta__subtitulo">Ubicación pública: sección Contacto y formulario Agendar mi cita.</p>
+              <div class="tarjeta__cuerpo">
+                <div class="campos-telefono">
+                  <label class="campo">
+                    <span class="campo__etiqueta">Prefijo</span>
+                    <input id="prefijo" class="campo__entrada" type="text" inputmode="tel" required maxlength="4"
+                           pattern="\+[0-9]{1,3}" title="Escribe el prefijo del país con el signo +, por ejemplo +52.">
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Teléfono</span>
+                    <input id="telefono" class="campo__entrada" type="text" inputmode="tel" required maxlength="14"
+                           pattern="(\s*[0-9]){10}\s*" title="Escribe los 10 dígitos del número; puedes separarlos con espacios.">
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">WhatsApp</span>
+                    <input id="whatsapp" class="campo__entrada" type="text" inputmode="tel" required maxlength="14"
+                           pattern="(\s*[0-9]){10}\s*" title="Escribe los 10 dígitos del número; puedes separarlos con espacios.">
+                    <span class="campo__ayuda">Recibe las citas del formulario Agendar.</span>
+                  </label>
+                </div>
+
+                <label class="interruptor">
+                  <input id="mostrarTelefono" type="checkbox" role="switch">
+                  Mostrar teléfono y WhatsApp
+                </label>
+                <p class="nota">Si lo desactivas, los números no aparecen en Contacto, pero el formulario Agendar mi cita seguirá enviando al WhatsApp.</p>
+
+                <label class="campo">
+                  <span class="campo__etiqueta">Etiqueta pública</span>
+                  <input id="etiquetaPublica" class="campo__entrada" type="text" required maxlength="40"
+                         title="Escribe el texto que acompaña al número.">
+                  <span class="campo__ayuda">Texto que acompaña al número en la página.</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 3" aria-labelledby="tituloUbicacion">
+              <h2 id="tituloUbicacion" class="tarjeta__titulo">Ubicación y correo</h2>
+              <p class="tarjeta__subtitulo">Publica solo la información que quieras compartir.</p>
+              <div class="tarjeta__cuerpo">
+                <div class="campos-2">
+                  <label class="campo">
+                    <span class="campo__etiqueta">Ciudad y estado</span>
+                    <input id="ciudad" class="campo__entrada" type="text" required maxlength="60"
+                           title="Escribe la ciudad y el estado.">
+                  </label>
+                  <label class="campo campo--seleccion">
+                    <span class="campo__etiqueta">Modalidad</span>
+                    <select id="modalidad" class="campo__entrada">
+                      <option>Consulta presencial</option>
+                      <option>Consulta en línea</option>
+                      <option>Consulta presencial y en línea</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label class="campo">
+                  <span class="campo__etiqueta">Dirección detallada</span>
+                  <input id="direccion" class="campo__entrada" type="text" maxlength="200" placeholder="Añadir dirección" autocomplete="off">
+                  <span class="campo__ayuda">Opcional · Calle, número, colonia y referencias.</span>
+                </label>
+
+                <div class="campos-2">
+                  <label class="campo">
+                    <span class="campo__etiqueta">Correo electrónico</span>
+                    <input id="correo" class="campo__entrada" type="email" maxlength="120" placeholder="Añadir correo electrónico" autocomplete="off"
+                           title="Escribe un correo válido, por ejemplo nombre@dominio.com.">
+                    <span class="campo__ayuda">Opcional.</span>
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">URL del mapa</span>
+                    <input id="urlMapa" class="campo__entrada" type="url" maxlength="500" placeholder="Añadir enlace de ubicación"
+                           pattern="https://.+" title="Pega el enlace completo de Google Maps; debe empezar con https://.">
+                    <span class="campo__ayuda">Opcional · Enlace de Google Maps. Si está vacío, no se muestra.</span>
+                  </label>
+                </div>
+
+                <div class="interruptores">
+                  <label class="interruptor">
+                    <input id="direccionVisible" type="checkbox" role="switch">
+                    Mostrar dirección
+                  </label>
+                  <label class="interruptor">
+                    <input id="correoVisible" type="checkbox" role="switch">
+                    Mostrar correo
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 4" aria-labelledby="tituloRedes">
+              <h2 id="tituloRedes" class="tarjeta__titulo">Redes sociales</h2>
+              <div class="tarjeta__cuerpo">
+                <div class="campos-2">
+                  <label class="campo">
+                    <span class="campo__etiqueta">URL de Instagram</span>
+                    <input id="instagram" class="campo__entrada" type="url" maxlength="200" placeholder="Añadir URL de Instagram"
+                           pattern="https://(www\.)?instagram\.com/.+" title="Pega el enlace completo, por ejemplo https://www.instagram.com/usuario.">
+                    <span class="campo__ayuda">Ejemplo: https://www.instagram.com/usuario</span>
+                  </label>
+                  <label class="campo">
+                    <span class="campo__etiqueta">URL de Facebook</span>
+                    <input id="facebook" class="campo__entrada" type="url" maxlength="200" placeholder="Añadir URL de Facebook"
+                           pattern="https://(www\.|m\.)?facebook\.com/.+" title="Pega el enlace completo, por ejemplo https://www.facebook.com/pagina.">
+                    <span class="campo__ayuda">Ejemplo: https://www.facebook.com/pagina</span>
+                  </label>
+                </div>
+                <div class="interruptores">
+                  <label class="interruptor">
+                    <input id="instagramActivo" type="checkbox" role="switch">
+                    Activar enlace de Instagram
+                  </label>
+                  <label class="interruptor">
+                    <input id="facebookActivo" type="checkbox" role="switch">
+                    Activar enlace de Facebook
+                  </label>
+                </div>
+                <p class="nota">Mientras un enlace esté inactivo, la página muestra «Próximamente».</p>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 7">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Resumen y avisos">
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 5" aria-labelledby="tituloResumen">
+              <h2 id="tituloResumen" class="tarjeta__titulo">Resumen público</h2>
+              <div class="tarjeta__cuerpo">
+                <span id="estadoPublicacion" class="insignia"></span>
+                <div class="resumen" aria-live="polite">
+                  <p id="resumenCiudad" class="resumen__lugar"></p>
+                  <p id="resumenModalidad" class="resumen__dato"></p>
+                  <p id="resumenTelefono" class="resumen__telefono"></p>
+                  <p id="resumenEtiqueta" class="resumen__detalle"></p>
+                  <p id="resumenDireccion" class="resumen__detalle"></p>
+                  <p id="resumenCorreo" class="resumen__detalle"></p>
+                  <p id="resumenRedes" class="resumen__redes"></p>
+                </div>
+              </div>
+            </section>
+
+            <div class="aviso" data-aviso-edicion role="status" style="--orden-movil: 1">
+              <p class="aviso__titulo" data-aviso-titulo></p>
+              <p data-aviso-texto></p>
+            </div>
+
+            <div id="avisoPendientes" class="aviso aviso--pendiente" style="--orden-movil: 6" hidden>
+              <p class="aviso__titulo">Datos pendientes</p>
+              <p id="textoPendientes"></p>
+            </div>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel } from "./js/layout.js";
+    import { controlarFormulario, leerPublicado, sonIguales } from "./js/borrador.js";
+
+    const { borrador } = await iniciarPanel("contacto");
+    const $ = (id) => document.getElementById(id);
+    const formulario = $("formulario");
+
+    const CAMPOS_TEXTO = ["prefijo", "telefono", "whatsapp", "etiquetaPublica", "ciudad", "modalidad",
+                          "direccion", "correo", "urlMapa", "instagram", "facebook"];
+    const INTERRUPTORES = ["mostrarTelefono", "direccionVisible", "correoVisible", "instagramActivo", "facebookActivo"];
+
+    // Un interruptor de visibilidad solo puede activarse si su dato tiene contenido
+    const DEPENDE_DE = { direccionVisible: "direccion", correoVisible: "correo", instagramActivo: "instagram", facebookActivo: "facebook" };
+
+    const PENDIENTES = { direccion: "dirección", correo: "correo", urlMapa: "URL del mapa", instagram: "Instagram", facebook: "Facebook" };
+
+    function leer() {
+      const valor = Object.fromEntries(CAMPOS_TEXTO.map((campo) => [campo, $(campo).value.trim()]));
+      INTERRUPTORES.forEach((campo) => { valor[campo] = $(campo).checked; });
+      return valor;
+    }
+
+    function sincronizarInterruptores() {
+      for (const [interruptor, campo] of Object.entries(DEPENDE_DE)) {
+        const vacio = !$(campo).value.trim();
+        $(interruptor).disabled = vacio;
+        if (vacio) $(interruptor).checked = false;
+      }
+    }
+
+    // Si el valor guardado de Modalidad no está en la lista, se agrega para no perderlo
+    function asegurarOpcion(select, valor) {
+      if (valor && ![...select.options].some((opcion) => opcion.value === valor)) {
+        select.add(new Option(valor, valor));
+      }
+    }
+
+    // ---- Resumen público (se actualiza mientras se escribe) ----
+
+    const publicado = await leerPublicado().catch(() => null);
+
+    function mostrar(id, texto) {
+      $(id).textContent = texto || "";
+      $(id).hidden = !texto;
+    }
+
+    function actualizarResumen() {
+      const c = leer();
+      mostrar("resumenCiudad", c.ciudad);
+      mostrar("resumenModalidad", c.modalidad);
+      mostrar("resumenTelefono", c.mostrarTelefono ? c.telefono : "Teléfono oculto");
+      $("resumenTelefono").classList.toggle("resumen__redes", !c.mostrarTelefono);
+      mostrar("resumenEtiqueta", c.mostrarTelefono ? [c.etiquetaPublica, c.prefijo].filter(Boolean).join(" · ") : "");
+      mostrar("resumenDireccion", c.direccionVisible ? c.direccion : "");
+      mostrar("resumenCorreo", c.correoVisible ? c.correo : "");
+      $("resumenRedes").textContent =
+        `Instagram · ${c.instagramActivo ? "Activo" : "Próximamente"}\nFacebook · ${c.facebookActivo ? "Activo" : "Próximamente"}`;
+      $("resumenRedes").style.whiteSpace = "pre-line";
+
+      const igualAPublicado = publicado && sonIguales({ ...borrador.contacto, ...c }, publicado.contacto);
+      $("estadoPublicacion").textContent = igualAPublicado ? "Publicado" : "Pendiente de publicar";
+      $("estadoPublicacion").className = `insignia ${igualAPublicado ? "insignia--exito" : "insignia--pendiente"}`;
+
+      const faltan = Object.keys(PENDIENTES).filter((campo) => !c[campo]).map((campo) => PENDIENTES[campo]);
+      $("avisoPendientes").hidden = faltan.length === 0;
+      $("textoPendientes").textContent = faltan.length === 0 ? "" :
+        `Sin capturar: ${faltan.length > 1 ? `${faltan.slice(0, -1).join(", ")} y ${faltan.at(-1)}` : faltan[0]}. ` +
+        "No se mostrarán en la página pública hasta que los agregues.";
+    }
+
+    // Se registra antes que controlarFormulario para que la revisión de cambios vea los interruptores ya ajustados
+    formulario.addEventListener("input", sincronizarInterruptores);
+    formulario.addEventListener("input", actualizarResumen);
+    formulario.addEventListener("change", actualizarResumen);
+
+    controlarFormulario({
+      formulario,
+      seccion: "contacto",
+      valorInicial: borrador.contacto,
+      rellenar: (c) => {
+        asegurarOpcion($("modalidad"), c.modalidad);
+        CAMPOS_TEXTO.forEach((campo) => { $(campo).value = c[campo] ?? ""; });
+        INTERRUPTORES.forEach((campo) => { $(campo).checked = Boolean(c[campo]); });
+        sincronizarInterruptores();
+        actualizarResumen();
+      },
+      leer
+    });
+  </script>
+</body>
+</html>

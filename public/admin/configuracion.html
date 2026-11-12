@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Configuración | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Configuración</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Configuración</h1>
+            <p class="pagina__descripcion">Controla la publicación y revisa la diferencia entre tu borrador y tu página pública.</p>
+          </div>
+          <a class="boton boton--secundario" href="/" target="_blank" rel="noopener">Ver página pública</a>
+        </div>
+
+        <form id="formulario" class="rejilla-trabajo rejilla-trabajo--intercalada" novalidate>
+          <div class="columna">
+            <section class="tarjeta" style="--orden-movil: 2" aria-labelledby="tituloVisibilidad">
+              <h2 id="tituloVisibilidad" class="tarjeta__titulo">Publicación y visibilidad</h2>
+              <div class="tarjeta__cuerpo">
+                <div class="pagina__cabecera" style="margin-top: 0">
+                  <div>
+                    <p style="font-weight: 600">Página pública</p>
+                    <p id="textoVisibilidad" class="nota"></p>
+                  </div>
+                  <span id="estadoSitio" class="insignia"></span>
+                </div>
+                <label class="interruptor">
+                  <input id="sitioVisible" type="checkbox" role="switch">
+                  Sitio visible
+                </label>
+                <p class="nota">Si lo desactivas y publicas, los visitantes verán un aviso de sitio en mantenimiento en lugar del contenido.</p>
+                <div class="campo campo--lectura">
+                  <span class="campo__etiqueta">Última publicación</span>
+                  <p id="ultimaPublicacion" class="campo__valor"></p>
+                </div>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 3" aria-labelledby="tituloMetadatos">
+              <h2 id="tituloMetadatos" class="tarjeta__titulo">Metadatos del sitio</h2>
+              <p class="tarjeta__subtitulo">Cómo aparece tu página en la pestaña del navegador y en buscadores como Google.</p>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Título de la página *</span>
+                  <input id="tituloPagina" class="campo__entrada" type="text" required maxlength="70">
+                  <span class="campo__ayuda">Hasta 70 caracteres.</span>
+                </label>
+                <label class="campo">
+                  <span class="campo__etiqueta">Descripción para buscadores</span>
+                  <textarea id="descripcionBuscadores" class="campo__entrada" rows="3" maxlength="160" placeholder="Añadir una descripción"></textarea>
+                  <span id="contadorDescripcion" class="campo__ayuda"></span>
+                </label>
+              </div>
+            </section>
+
+            <section class="tarjeta" style="--orden-movil: 4" aria-labelledby="tituloNota">
+              <h2 id="tituloNota" class="tarjeta__titulo">Nota interna</h2>
+              <div class="tarjeta__cuerpo">
+                <label class="campo">
+                  <span class="campo__etiqueta">Etiqueta de revisión interna</span>
+                  <input id="etiquetaRevision" class="campo__entrada" type="text" maxlength="120" placeholder="Ejemplo: Revisar las imágenes antes de publicar">
+                  <span class="campo__ayuda">Recordatorio para el equipo · No se muestra en el sitio.</span>
+                </label>
+              </div>
+            </section>
+
+            <div class="barra-acciones" style="--orden-movil: 8">
+              <p class="barra-acciones__estado" data-estado-edicion></p>
+              <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+              <button class="boton boton--primario" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <aside class="columna" aria-label="Revisión y publicación">
+            <div class="aviso" data-aviso-edicion role="status" style="--orden-movil: 1">
+              <p class="aviso__titulo" data-aviso-titulo></p>
+              <p data-aviso-texto></p>
+            </div>
+
+            <section class="tarjeta tarjeta--suave" style="--orden-movil: 5" aria-labelledby="tituloRevision">
+              <h2 id="tituloRevision" class="tarjeta__titulo">Revisión de cambios</h2>
+              <div class="tarjeta__cuerpo">
+                <span id="estadoCambios" class="insignia"></span>
+                <p id="textoCambios" class="nota"></p>
+                <a class="boton boton--secundario boton--ancho" href="publicar.html">Revisar borrador</a>
+                <a class="boton boton--primario boton--ancho" href="publicar.html">Publicar cambios</a>
+              </div>
+            </section>
+
+            <div class="aviso aviso--info" style="--orden-movil: 6">
+              <p class="aviso__titulo">Guardar no es publicar</p>
+              <p>Guardar conserva tu trabajo en un borrador. Publicar reemplaza la versión pública después de revisar los cambios.</p>
+            </div>
+
+            <section class="tarjeta" style="--orden-movil: 7" aria-labelledby="tituloDominio">
+              <h2 id="tituloDominio" class="tarjeta__titulo">Dirección del sitio</h2>
+              <p class="nota" style="margin-top: 12px">La página se publica en <strong>dr-alan-prado.web.app</strong>. Si adquieres un dominio propio, se configura en la etapa de despliegue.</p>
+            </section>
+          </aside>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { iniciarPanel } from "./js/layout.js";
+    import { controlarFormulario, leerPublicado, seccionesConCambios, formatearFecha } from "./js/borrador.js";
+    import { unirEnEspanol } from "./js/listas.js";
+
+    const { borrador, usuario } = await iniciarPanel("configuracion");
+    const $ = (id) => document.getElementById(id);
+    const publicado = await leerPublicado().catch(() => null);
+
+    // ---- Estado público actual ----
+    const visibleEnPublico = publicado?.configuracion?.sitioVisible !== false;
+    $("estadoSitio").textContent = !publicado ? "Sin publicar" : visibleEnPublico ? "Publicado" : "Oculto";
+    $("estadoSitio").className = `insignia ${publicado && visibleEnPublico ? "insignia--exito" : "insignia--pendiente"}`;
+    $("textoVisibilidad").textContent = !publicado
+      ? "Aún no hay una versión publicada."
+      : visibleEnPublico ? "La versión publicada está visible para tus visitantes." : "La versión publicada muestra el aviso de mantenimiento.";
+
+    const meta = publicado?.metadatos || {};
+    const fecha = formatearFecha(meta.publicadoEn);
+    $("ultimaPublicacion").textContent = fecha ? `${fecha}${meta.publicadoPor === usuario.uid ? " · por ti" : ""}` : "Todavía no se ha publicado desde el panel";
+    $("ultimaPublicacion").classList.toggle("campo__valor--vacio", !fecha);
+
+    // ---- Formulario ----
+    const leer = () => ({
+      sitioVisible: $("sitioVisible").checked,
+      tituloPagina: $("tituloPagina").value.trim(),
+      descripcionBuscadores: $("descripcionBuscadores").value.trim(),
+      etiquetaRevision: $("etiquetaRevision").value.trim()
+    });
+
+    function actualizarRevision() {
+      const largo = $("descripcionBuscadores").value.trim().length;
+      $("contadorDescripcion").textContent = `${largo} de 160 caracteres · Recomendado: entre 120 y 160.`;
+
+      const actual = { ...borrador, configuracion: { ...borrador.configuracion, ...leer() } };
+      const cambios = seccionesConCambios(actual, publicado);
+      $("estadoCambios").textContent = cambios.length ? `${cambios.length} ${cambios.length === 1 ? "sección" : "secciones"} sin publicar` : "Todo publicado";
+      $("estadoCambios").className = `insignia ${cambios.length ? "insignia--pendiente" : "insignia--exito"}`;
+      $("textoCambios").textContent = cambios.length
+        ? `Tu borrador tiene cambios en ${unirEnEspanol(cambios.map((c) => c.nombre))}. Revísalos antes de publicar.`
+        : "Tu borrador coincide con la página pública.";
+    }
+    $("formulario").addEventListener("input", actualizarRevision);
+    $("formulario").addEventListener("change", actualizarRevision);
+
+    controlarFormulario({
+      formulario: $("formulario"),
+      seccion: "configuracion",
+      valorInicial: borrador.configuracion,
+      rellenar: (c) => {
+        $("sitioVisible").checked = c.sitioVisible !== false;
+        $("tituloPagina").value = c.tituloPagina ?? "";
+        $("descripcionBuscadores").value = c.descripcionBuscadores ?? "";
+        $("etiquetaRevision").value = c.etiquetaRevision ?? "";
+        actualizarRevision();
+      },
+      leer,
+      alGuardar: (c) => { borrador.configuracion = c; actualizarRevision(); }
+    });
+  </script>
+</body>
+</html>

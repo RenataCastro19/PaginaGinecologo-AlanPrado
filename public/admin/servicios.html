@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Servicios | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <div class="panel">
+    <aside id="barraLateral" class="panel__lateral" aria-label="Menú de administración"></aside>
+
+    <div class="panel__principal">
+      <header id="encabezado" class="panel__encabezado"></header>
+
+      <main class="panel__contenido">
+        <p class="pagina__ruta">Administración del sitio / Servicios / Especialidades</p>
+        <div class="pagina__cabecera">
+          <div>
+            <h1 class="pagina__titulo">Servicios / Especialidades</h1>
+            <p class="pagina__descripcion">Organiza las especialidades y paquetes que aparecen en tu página.</p>
+          </div>
+          <button id="agregarServicio" class="boton boton--primario" type="button">Agregar servicio</button>
+        </div>
+
+        <div class="contadores">
+          <span id="contadorServicios" class="insignia insignia--marca"></span>
+          <span id="contadorInactivos" class="insignia insignia--marca"></span>
+          <span class="nota">Cada cambio se guarda en el borrador al momento.</span>
+        </div>
+
+        <div class="aviso pagina__aviso" data-aviso-edicion role="status">
+          <p class="aviso__titulo" data-aviso-titulo></p>
+          <p data-aviso-texto></p>
+        </div>
+
+        <form id="formulario" novalidate>
+          <section class="tarjeta panel-lista" aria-label="Lista de servicios">
+            <div class="filtros">
+              <label class="campo campo--busqueda">
+                <span class="campo__etiqueta">Buscar un servicio</span>
+                <input id="buscarServicio" class="campo__entrada" type="search" placeholder="Buscar por nombre o descripción" autocomplete="off">
+              </label>
+              <label class="campo campo--seleccion">
+                <span class="campo__etiqueta">Estado</span>
+                <select id="filtroServicio" class="campo__entrada">
+                  <option value="todos">Todos los servicios</option>
+                  <option value="activos">Solo activos</option>
+                  <option value="inactivos">Solo inactivos</option>
+                </select>
+              </label>
+            </div>
+            <div class="lista__fila lista__fila--cabecera" aria-hidden="true">
+              <span>Servicio</span><span>Descripción pública</span><span>Visibilidad</span><span>Acciones</span>
+            </div>
+            <div id="listaServicios"></div>
+          </section>
+
+          <div class="lista__pie">
+            <span id="pieServicios"></span>
+            <a class="boton boton--secundario" href="publicar.html">Revisar y publicar</a>
+          </div>
+
+          <section class="tarjeta" style="margin-top: 32px" aria-labelledby="tituloPaquetes">
+            <div class="pagina__cabecera" style="margin-top: 0">
+              <div>
+                <h2 id="tituloPaquetes" class="tarjeta__titulo">Paquetes</h2>
+                <p class="tarjeta__subtitulo">Ubicación pública: sección Paquetes, debajo de Servicios.</p>
+              </div>
+              <button id="agregarPaquete" class="boton boton--secundario" type="button">Agregar paquete</button>
+            </div>
+            <div class="tarjeta__cuerpo">
+              <div id="listaPaquetes"></div>
+              <label class="campo">
+                <span class="campo__etiqueta">Nota al pie de los paquetes</span>
+                <textarea id="notaPaquetes" class="campo__entrada" rows="2" maxlength="300"></textarea>
+                <span class="campo__ayuda">Por ejemplo, la moneda de los precios o lo que no incluyen. Esta nota se guarda con el botón Guardar cambios.</span>
+              </label>
+            </div>
+          </section>
+
+          <div class="barra-acciones">
+            <p class="barra-acciones__estado" data-estado-edicion></p>
+            <button class="boton boton--secundario" type="button" data-accion="cancelar">Cancelar</button>
+            <button class="boton boton--primario" type="submit">Guardar cambios</button>
+          </div>
+        </form>
+      </main>
+
+      <footer id="pie" class="panel__pie"></footer>
+    </div>
+  </div>
+
+  <!-- Editor de servicio (Figma 3:35967) -->
+  <dialog id="editorServicio" class="dialogo dialogo--editor" aria-labelledby="tituloEditorServicio">
+    <form class="dialogo__formulario">
+      <div class="dialogo__cabecera">
+        <h2 id="tituloEditorServicio" class="dialogo__titulo">Editar servicio</h2>
+        <button class="dialogo__cerrar" type="button" data-cerrar-dialogo aria-label="Cerrar"></button>
+      </div>
+      <div class="rejilla-trabajo">
+        <section class="tarjeta">
+          <h3 class="tarjeta__titulo">Contenido del servicio</h3>
+          <p class="tarjeta__subtitulo">Se muestra en la tarjeta pública de Servicios.</p>
+          <div class="tarjeta__cuerpo">
+            <label class="campo">
+              <span class="campo__etiqueta">Nombre del servicio *</span>
+              <input id="servicioNombre" class="campo__entrada" type="text" required maxlength="60" placeholder="Escribe el nombre del servicio">
+              <span class="campo__ayuda">Obligatorio · Usa un nombre claro y breve.</span>
+            </label>
+            <label class="campo">
+              <span class="campo__etiqueta">Descripción pública *</span>
+              <textarea id="servicioDescripcion" class="campo__entrada" rows="3" required maxlength="220"></textarea>
+            </label>
+            <div class="campos-2">
+              <label class="campo campo--seleccion">
+                <span class="campo__etiqueta">Ícono</span>
+                <select id="servicioIcono" class="campo__entrada"></select>
+              </label>
+              <label class="campo">
+                <span class="campo__etiqueta">Orden</span>
+                <input id="servicioOrden" class="campo__entrada" type="number" min="1" step="1" required
+                       title="Escribe la posición en la lista (1 es la primera).">
+                <span id="servicioOrdenAyuda" class="campo__ayuda"></span>
+              </label>
+            </div>
+            <label class="interruptor">
+              <input id="servicioVisible" type="checkbox" role="switch">
+              Activo · Visible al publicar
+            </label>
+          </div>
+        </section>
+        <aside class="tarjeta tarjeta--suave vista-previa" aria-label="Vista previa">
+          <h3 class="tarjeta__titulo">Vista previa de la tarjeta</h3>
+          <img id="previaIcono" width="32" height="32" alt="">
+          <p id="previaNombre" class="vista-previa__titulo"></p>
+          <p id="previaDescripcion" class="vista-previa__texto"></p>
+        </aside>
+      </div>
+      <div class="dialogo__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar-dialogo>Cancelar</button>
+        <button class="boton boton--primario" type="submit">Guardar servicio</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Editor de paquete (sin pantalla en el Figma; mismo patrón que el editor de servicio) -->
+  <dialog id="editorPaquete" class="dialogo dialogo--editor" aria-labelledby="tituloEditorPaquete">
+    <form class="dialogo__formulario">
+      <div class="dialogo__cabecera">
+        <h2 id="tituloEditorPaquete" class="dialogo__titulo">Editar paquete</h2>
+        <button class="dialogo__cerrar" type="button" data-cerrar-dialogo aria-label="Cerrar"></button>
+      </div>
+      <div class="rejilla-trabajo">
+        <section class="tarjeta">
+          <div class="tarjeta__cuerpo" style="margin-top: 0">
+            <div class="campos-2">
+              <label class="campo">
+                <span class="campo__etiqueta">Etiqueta</span>
+                <input id="paqueteEtiqueta" class="campo__entrada" type="text" maxlength="40" placeholder="Ejemplo: Paquete Prenatal">
+              </label>
+              <label class="campo">
+                <span class="campo__etiqueta">Nombre *</span>
+                <input id="paqueteNombre" class="campo__entrada" type="text" required maxlength="70">
+              </label>
+            </div>
+            <label class="campo">
+              <span class="campo__etiqueta">Descripción *</span>
+              <textarea id="paqueteDescripcion" class="campo__entrada" rows="2" required maxlength="220"></textarea>
+            </label>
+            <label class="campo">
+              <span class="campo__etiqueta">Incluye *</span>
+              <textarea id="paqueteIncluye" class="campo__entrada" rows="4" required maxlength="800"></textarea>
+              <span class="campo__ayuda">Un elemento por línea.</span>
+            </label>
+            <div class="campos-2">
+              <label class="campo">
+                <span class="campo__etiqueta">Precio regular (MXN)</span>
+                <input id="paquetePrecioRegular" class="campo__entrada" type="number" min="0" step="1" inputmode="numeric"
+                       title="Escribe el precio sin centavos ni signos, por ejemplo 2400.">
+                <span class="campo__ayuda">Opcional · Se muestra tachado.</span>
+              </label>
+              <label class="campo">
+                <span class="campo__etiqueta">Precio del paquete (MXN) *</span>
+                <input id="paquetePrecio" class="campo__entrada" type="number" min="1" step="1" inputmode="numeric" required
+                       title="Escribe el precio sin centavos ni signos, por ejemplo 1650.">
+              </label>
+            </div>
+            <label class="campo" style="max-width: 200px">
+              <span class="campo__etiqueta">Orden</span>
+              <input id="paqueteOrden" class="campo__entrada" type="number" min="1" step="1" required
+                     title="Escribe la posición en la lista (1 es la primera).">
+            </label>
+            <div class="interruptores">
+              <label class="interruptor">
+                <input id="paqueteVisible" type="checkbox" role="switch">
+                Activo · Visible al publicar
+              </label>
+              <label class="interruptor">
+                <input id="paqueteDestacado" type="checkbox" role="switch">
+                Destacado
+              </label>
+            </div>
+          </div>
+        </section>
+        <aside class="tarjeta tarjeta--suave vista-previa" aria-label="Vista previa">
+          <h3 class="tarjeta__titulo">Vista previa</h3>
+          <span id="previaPaqueteEtiqueta" class="insignia insignia--marca"></span>
+          <p id="previaPaqueteNombre" class="vista-previa__titulo"></p>
+          <p id="previaPaquetePrecio" class="resumen__telefono"></p>
+          <p id="previaPaqueteIncluye" class="nota" style="white-space: pre-line"></p>
+        </aside>
+      </div>
+      <div class="dialogo__acciones">
+        <button class="boton boton--secundario" type="button" data-cerrar-dialogo>Cancelar</button>
+        <button class="boton boton--primario" type="submit">Guardar paquete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module">
+    import { iniciarPanel, escaparHTML } from "./js/layout.js";
+    import { controlarFormulario } from "./js/borrador.js";
+    import { nuevoId, ordenar, renumerar, mover, abrirEditor, confirmarEliminacion, ICONO_CERRAR } from "./js/listas.js";
+
+    const { borrador } = await iniciarPanel("servicios");
+    const $ = (id) => document.getElementById(id);
+    document.querySelectorAll(".dialogo__cerrar").forEach((b) => { b.innerHTML = ICONO_CERRAR; });
+
+    // Íconos disponibles (descargados del Figma en img/iconos/)
+    const ICONOS = {
+      estetoscopio: "Estetoscopio", bebe: "Bebé", escaner: "Escáner",
+      "corazon-manos": "Corazón y manos", flor: "Flor", corazon: "Corazón"
+    };
+    // Ícono de los seis servicios originales mientras no tengan el campo "icono"
+    const ICONO_ORIGINAL = {
+      "consulta-general": "estetoscopio", "control-prenatal": "bebe", colposcopia: "escaner",
+      "planificacion-familiar": "corazon-manos", menopausia: "flor", "salud-sexual": "corazon"
+    };
+    const iconoDe = (servicio) => servicio.icono || ICONO_ORIGINAL[servicio.id] || "estetoscopio";
+    const rutaIcono = (clave) => `img/iconos/${ICONOS[clave] ? clave : "estetoscopio"}.svg`;
+    $("servicioIcono").innerHTML = Object.entries(ICONOS).map(([clave, texto]) => `<option value="${clave}">${texto}</option>`).join("");
+
+    const pesos = (n) => (Number.isFinite(n) ? `$${n.toLocaleString("es-MX")}` : "");
+    const normalizar = (t = "") => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+    // ---- Estado de la pantalla ----
+    let servicios = [];
+    let paquetes = [];
+
+    function dibujarServicios() {
+      const texto = normalizar($("buscarServicio").value.trim());
+      const filtro = $("filtroServicio").value;
+      const visibles = servicios.filter((s) =>
+        (filtro === "todos" || (filtro === "activos") === Boolean(s.visible)) &&
+        (!texto || normalizar(`${s.nombre} ${s.descripcion}`).includes(texto)));
+
+      $("listaServicios").innerHTML = visibles.length === 0
+        ? `<p class="lista__vacia">${servicios.length === 0 ? "Aún no hay servicios. Usa «Agregar servicio»." : "Ningún servicio coincide con la búsqueda."}</p>`
+        : visibles.map((s) => `
+          <div class="lista__fila${s.visible ? "" : " lista__fila--inactiva"}" data-id="${escaparHTML(s.id)}">
+            <span class="lista__nombre"><img src="${rutaIcono(iconoDe(s))}" width="20" height="20" alt="">${escaparHTML(s.nombre)}</span>
+            <span class="lista__descripcion">${escaparHTML(s.descripcion)}</span>
+            <label class="interruptor">
+              <input type="checkbox" role="switch" data-accion-lista="visible" ${s.visible ? "checked" : ""} aria-label="${escaparHTML(s.nombre)}: activo">
+              ${s.visible ? "Activo" : "Inactivo"}
+            </label>
+            <span class="lista__acciones">
+              <button class="boton boton--texto" type="button" data-accion-lista="editar">Editar</button>
+              <button class="boton-icono" type="button" data-accion-lista="eliminar" aria-label="Eliminar ${escaparHTML(s.nombre)}">
+                <img src="img/iconos/eliminar.svg" width="18" height="18" alt="">
+              </button>
+            </span>
+          </div>`).join("");
+
+      const activos = servicios.filter((s) => s.visible).length;
+      const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+      $("contadorServicios").textContent = `${plural(servicios.length, "servicio", "servicios")} · ${plural(activos, "activo", "activos")}`;
+      $("contadorInactivos").textContent = plural(servicios.length - activos, "inactivo", "inactivos");
+      $("pieServicios").textContent = `Mostrando ${visibles.length} de ${servicios.length} servicios · Orden de la página`;
+    }
+
+    function dibujarPaquetes() {
+      $("listaPaquetes").innerHTML = paquetes.length === 0
+        ? '<p class="nota">Aún no hay paquetes. Usa «Agregar paquete».</p>'
+        : paquetes.map((p, i) => `
+          <div class="lista__fila${p.visible ? "" : " lista__fila--inactiva"}" data-id="${escaparHTML(p.id)}" style="padding-inline: 0">
+            <span class="lista__nombre" style="display: grid; gap: 4px">
+              ${p.etiqueta ? `<span class="insignia insignia--marca" style="justify-self: start">${escaparHTML(p.etiqueta)}</span>` : ""}
+              ${escaparHTML(p.nombre)}
+            </span>
+            <span class="lista__descripcion">
+              ${p.precioRegular ? `<s>${pesos(p.precioRegular)}</s> ` : ""}<strong style="color: var(--purple-700)">${pesos(p.precioPaquete)}</strong>
+              · ${(p.incluye || []).length} elementos incluidos${p.destacado ? ' · <span class="insignia insignia--exito">Destacado</span>' : ""}
+            </span>
+            <label class="interruptor">
+              <input type="checkbox" role="switch" data-accion-lista="visible" ${p.visible ? "checked" : ""} aria-label="${escaparHTML(p.nombre)}: activo">
+              ${p.visible ? "Activo" : "Inactivo"}
+            </label>
+            <span class="lista__acciones">
+              <button class="boton boton--texto" type="button" data-accion-lista="editar">Editar</button>
+              <button class="boton-icono" type="button" data-accion-lista="eliminar" aria-label="Eliminar ${escaparHTML(p.nombre)}">
+                <img src="img/iconos/eliminar.svg" width="18" height="18" alt="">
+              </button>
+            </span>
+          </div>`).join("");
+    }
+
+    // ---- Formulario principal ----
+    const control = controlarFormulario({
+      formulario: $("formulario"),
+      seccion: ["servicios", "paquetes", "notaPaquetes"],
+      valorInicial: {
+        servicios: ordenar(borrador.servicios),
+        paquetes: ordenar(borrador.paquetes),
+        notaPaquetes: borrador.notaPaquetes ?? ""
+      },
+      rellenar: (v) => {
+        servicios = ordenar(v.servicios);
+        paquetes = ordenar(v.paquetes);
+        $("notaPaquetes").value = v.notaPaquetes ?? "";
+        dibujarServicios();
+        dibujarPaquetes();
+      },
+      leer: () => ({
+        servicios: structuredClone(servicios),
+        paquetes: structuredClone(paquetes),
+        notaPaquetes: $("notaPaquetes").value.trim()
+      })
+    });
+
+    // Cada acción de la lista se guarda al momento
+    function aplicar() {
+      dibujarServicios();
+      dibujarPaquetes();
+      control.revisar();
+      control.guardar();
+    }
+
+    $("buscarServicio").addEventListener("input", dibujarServicios);
+    $("filtroServicio").addEventListener("change", dibujarServicios);
+
+    // ---- Editor de servicio ----
+    function actualizarPreviaServicio() {
+      $("previaIcono").src = rutaIcono($("servicioIcono").value);
+      $("previaNombre").textContent = $("servicioNombre").value.trim() || "Nombre del servicio";
+      $("previaDescripcion").textContent = $("servicioDescripcion").value.trim() || "Descripción pública";
+    }
+    $("editorServicio").addEventListener("input", actualizarPreviaServicio);
+    $("editorServicio").addEventListener("change", actualizarPreviaServicio);
+
+    async function editarServicio(id) {
+      const indice = servicios.findIndex((s) => s.id === id);
+      const actual = indice >= 0 ? servicios[indice] : null;
+      const total = actual ? servicios.length : servicios.length + 1;
+      $("tituloEditorServicio").textContent = actual ? "Editar servicio" : "Agregar servicio";
+
+      const resultado = await abrirEditor({
+        dialogo: $("editorServicio"),
+        rellenar: () => {
+          $("servicioNombre").value = actual?.nombre ?? "";
+          $("servicioDescripcion").value = actual?.descripcion ?? "";
+          $("servicioIcono").value = actual ? iconoDe(actual) : "estetoscopio";
+          $("servicioOrden").value = actual ? indice + 1 : total;
+          $("servicioOrden").max = total;
+          $("servicioOrdenAyuda").textContent = `Posición en la lista, de 1 a ${total}.`;
+          $("servicioVisible").checked = actual ? Boolean(actual.visible) : true;
+          actualizarPreviaServicio();
+        },
+        leer: () => ({
+          nombre: $("servicioNombre").value.trim(),
+          descripcion: $("servicioDescripcion").value.trim(),
+          icono: $("servicioIcono").value,
+          visible: $("servicioVisible").checked,
+          posicion: Number($("servicioOrden").value) - 1
+        })
+      });
+      if (!resultado) return;
+
+      const { posicion, ...datos } = resultado;
+      if (actual) {
+        Object.assign(actual, datos);
+        mover(servicios, indice, posicion);
+      } else {
+        servicios.push({ id: nuevoId(datos.nombre), ...datos, orden: 0 });
+        mover(servicios, servicios.length - 1, posicion);
+      }
+      aplicar();
+    }
+
+    // ---- Editor de paquete ----
+    function actualizarPreviaPaquete() {
+      $("previaPaqueteEtiqueta").textContent = $("paqueteEtiqueta").value.trim() || "Etiqueta";
+      $("previaPaqueteNombre").textContent = $("paqueteNombre").value.trim() || "Nombre del paquete";
+      const regular = Number($("paquetePrecioRegular").value), precio = Number($("paquetePrecio").value);
+      $("previaPaquetePrecio").innerHTML = `${regular ? `<s style="color: var(--texto-suave); font-weight: 400">${pesos(regular)}</s> ` : ""}${escaparHTML(precio ? pesos(precio) : "")}`;
+      $("previaPaqueteIncluye").textContent = $("paqueteIncluye").value.split("\n").map((l) => l.trim()).filter(Boolean).map((l) => `· ${l}`).join("\n");
+    }
+    $("editorPaquete").addEventListener("input", actualizarPreviaPaquete);
+
+    async function editarPaquete(id) {
+      const indice = paquetes.findIndex((p) => p.id === id);
+      const actual = indice >= 0 ? paquetes[indice] : null;
+      const total = actual ? paquetes.length : paquetes.length + 1;
+      $("tituloEditorPaquete").textContent = actual ? "Editar paquete" : "Agregar paquete";
+
+      const resultado = await abrirEditor({
+        dialogo: $("editorPaquete"),
+        rellenar: () => {
+          $("paqueteEtiqueta").value = actual?.etiqueta ?? "";
+          $("paqueteNombre").value = actual?.nombre ?? "";
+          $("paqueteDescripcion").value = actual?.descripcion ?? "";
+          $("paqueteIncluye").value = (actual?.incluye || []).join("\n");
+          $("paquetePrecioRegular").value = actual?.precioRegular ?? "";
+          $("paquetePrecio").value = actual?.precioPaquete ?? "";
+          $("paqueteOrden").value = actual ? indice + 1 : total;
+          $("paqueteOrden").max = total;
+          $("paqueteVisible").checked = actual ? Boolean(actual.visible) : true;
+          $("paqueteDestacado").checked = Boolean(actual?.destacado);
+          actualizarPreviaPaquete();
+        },
+        validar: () => {
+          const regular = Number($("paquetePrecioRegular").value), precio = Number($("paquetePrecio").value);
+          if (regular && precio && precio > regular) {
+            $("paquetePrecio").setCustomValidity("El precio del paquete no puede ser mayor que el precio regular.");
+          }
+        },
+        leer: () => ({
+          etiqueta: $("paqueteEtiqueta").value.trim(),
+          nombre: $("paqueteNombre").value.trim(),
+          descripcion: $("paqueteDescripcion").value.trim(),
+          incluye: $("paqueteIncluye").value.split("\n").map((l) => l.trim()).filter(Boolean),
+          precioRegular: $("paquetePrecioRegular").value === "" ? null : Number($("paquetePrecioRegular").value),
+          precioPaquete: Number($("paquetePrecio").value),
+          visible: $("paqueteVisible").checked,
+          destacado: $("paqueteDestacado").checked,
+          posicion: Number($("paqueteOrden").value) - 1
+        })
+      });
+      if (!resultado) return;
+
+      const { posicion, ...datos } = resultado;
+      if (actual) {
+        Object.assign(actual, datos);
+        mover(paquetes, indice, posicion);
+      } else {
+        paquetes.push({ id: nuevoId(datos.nombre), ...datos, orden: 0 });
+        mover(paquetes, paquetes.length - 1, posicion);
+      }
+      aplicar();
+    }
+
+    // ---- Acciones dentro de las listas ----
+    async function accionEnLista(evento, lista, editar, tipo) {
+      const boton = evento.target.closest("[data-accion-lista]");
+      if (!boton) return;
+      const fila = boton.closest("[data-id]");
+      const elemento = lista().find((x) => x.id === fila.dataset.id);
+      const accion = boton.dataset.accionLista;
+
+      if (accion === "visible" && evento.type === "change") {
+        elemento.visible = boton.checked;
+        aplicar();
+      } else if (accion === "editar" && evento.type === "click") {
+        editar(elemento.id);
+      } else if (accion === "eliminar" && evento.type === "click") {
+        const confirmado = await confirmarEliminacion({
+          titulo: `¿Eliminar este ${tipo}?`,
+          nombre: elemento.nombre,
+          mensaje: `Se eliminará «${elemento.nombre}» de tu borrador. Dejará de mostrarse en la página pública cuando publiques los cambios.`,
+          textoBoton: `Eliminar ${tipo}`
+        });
+        if (!confirmado) return;
+        const arreglo = lista();
+        arreglo.splice(arreglo.indexOf(elemento), 1);
+        renumerar(arreglo);
+        aplicar();
+      }
+    }
+    for (const tipoEvento of ["click", "change"]) {
+      $("listaServicios").addEventListener(tipoEvento, (e) => accionEnLista(e, () => servicios, editarServicio, "servicio"));
+      $("listaPaquetes").addEventListener(tipoEvento, (e) => accionEnLista(e, () => paquetes, editarPaquete, "paquete"));
+    }
+    $("agregarServicio").addEventListener("click", () => editarServicio(null));
+    $("agregarPaquete").addEventListener("click", () => editarPaquete(null));
+  </script>
+</body>
+</html>
