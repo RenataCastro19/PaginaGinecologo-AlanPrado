@@ -1,0 +1,204 @@
+/* Estilos del panel de administración.
+   Tokens tomados de la landing (public/css/base.css) para mantener la identidad visual. */
+
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-300: #d8b4fe;
+  --purple-600: #9333ea;
+  --purple-700: #7e22ce;
+  --purple-800: #6b21a8;
+  --purple-950: #3b0764;
+
+  --texto: #1a0533;
+  --texto-suave: #5b4a6b;
+  --error-fondo: #fdecec;
+  --error-texto: #9b1c1c;
+  --exito-fondo: #e9f7ef;
+  --exito-texto: #1e6b3a;
+
+  --radio-campo: 12px;
+  --radio-boton: 999px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--texto);
+  background: #fff;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+
+/* ---------- Campos (mismo patrón que el Figma: etiqueta dentro del recuadro) ---------- */
+
+.campo {
+  display: block;
+  border: 1px solid var(--purple-200);
+  border-radius: var(--radio-campo);
+  padding: 10px 14px 8px;
+  background: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+.campo:focus-within {
+  border-color: var(--purple-600);
+  box-shadow: 0 0 0 3px var(--purple-100);
+}
+.campo__etiqueta {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--purple-700);
+}
+.campo__fila { display: flex; align-items: center; gap: 8px; }
+.campo__entrada {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  padding: 4px 0;
+  font: inherit;
+  font-size: 15px;
+  color: var(--texto);
+  background: transparent;
+}
+.campo__accion {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--purple-700);
+  padding: 4px 2px;
+  border-radius: 6px;
+}
+.campo__accion:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: var(--radio-boton);
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color .15s;
+}
+.boton--primario { background: var(--purple-700); color: #fff; }
+.boton--primario:hover { background: var(--purple-800); }
+.boton--primario:disabled { background: var(--purple-300); cursor: wait; }
+.boton:focus-visible { outline: 2px solid var(--purple-950); outline-offset: 3px; }
+
+.enlace {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--purple-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.enlace:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Mensajes ---------- */
+
+.aviso {
+  border-radius: var(--radio-campo);
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.aviso[hidden] { display: none; }
+.aviso--error { background: var(--error-fondo); color: var(--error-texto); }
+.aviso--exito { background: var(--exito-fondo); color: var(--exito-texto); }
+.aviso--info { background: var(--purple-100); color: var(--purple-950); }
+
+/* ---------- Verificación de sesión ----------
+   Mientras se comprueba la sesión, el contenido de la página no se muestra. */
+
+body.verificando > * { visibility: hidden; }
+body.verificando::after {
+  content: "Verificando sesión…";
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  color: var(--purple-700);
+  background: var(--purple-50);
+}
+
+/* ---------- Pantalla de inicio de sesión ---------- */
+
+.acceso {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.acceso__marca {
+  background: var(--purple-950);
+  color: #fff;
+  padding: 32px 24px;
+}
+.acceso__nombre {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(26px, 6vw, 44px);
+  line-height: 1.12;
+  max-width: 18ch;
+}
+.acceso__especialidad {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--purple-200);
+}
+
+.acceso__seccion {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--purple-300);
+}
+
+.acceso__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--purple-50);
+}
+
+.formulario {
+  width: 100%;
+  max-width: 380px;
+  display: grid;
+  gap: 16px;
+}
+.formulario__titulo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--purple-950);
+}
+.formulario__descripcion { color: var(--texto-suave); font-size: 15px; margin-top: -8px; }
+.formulario .boton { width: 100%; margin-top: 4px; }
+.formulario__pie { text-align: center; }
+.formulario[hidden] { display: none; }
+
+@media (min-width: 900px) {
+  .acceso { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); grid-template-rows: none; }
+  .acceso__marca {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 56px;
+  }
+  .acceso__contenido { padding: 56px; background: #fff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

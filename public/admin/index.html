@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>Prueba</title></head>
-<body>
-  <p>Prueba de conexión: revise la consola del navegador.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel | Administración del sitio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<!-- Página provisional: se reemplazará por el Dashboard en la Fase 5 -->
+<body class="verificando">
+  <main style="padding: 40px 24px;">
+    <h1 style="font-family: var(--font-display); color: var(--purple-950);">Panel de administración</h1>
+    <p id="estadoSesion" style="margin-top: 12px;"></p>
+    <button id="btnCerrarSesion" class="boton boton--primario" type="button" style="margin-top: 24px;">Cerrar sesión</button>
+  </main>
+
   <script type="module">
-    import { app } from "../js/firebase-config.js";
-    console.log("Firebase conectado al proyecto:", app.options.projectId);
+    import { protegerPagina, cerrarSesion } from "./js/auth.js";
+
+    const { usuario, administrador } = await protegerPagina();
+    document.getElementById("estadoSesion").textContent =
+      `Sesión activa: ${administrador.nombre} (${usuario.email})`;
+
+    const botonCerrar = document.getElementById("btnCerrarSesion");
+    botonCerrar.addEventListener("click", async () => {
+      botonCerrar.disabled = true;
+      botonCerrar.textContent = "Cerrando sesión…";
+      if (!(await cerrarSesion())) {
+        botonCerrar.disabled = false;
+        botonCerrar.textContent = "Cerrar sesión";
+      }
+    });
   </script>
 </body>
 </html>

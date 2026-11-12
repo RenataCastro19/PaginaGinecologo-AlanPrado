@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Iniciar sesión | Administración del sitio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="verificando">
+  <main class="acceso">
+    <section class="acceso__marca" aria-label="Sitio">
+      <p class="acceso__nombre">Dr. Alan Guillermo Prado Villalobos</p>
+      <p class="acceso__especialidad">Ginecología y Obstetricia</p>
+      <p class="acceso__seccion">Administración del sitio</p>
+    </section>
+
+    <section class="acceso__contenido">
+      <form id="formAcceso" class="formulario" novalidate>
+        <h1 class="formulario__titulo">Iniciar sesión</h1>
+        <p class="formulario__descripcion">Ingrese para editar y publicar la información de su página.</p>
+
+        <div id="avisoError" class="aviso aviso--error" role="alert" hidden></div>
+        <div id="avisoInfo" class="aviso aviso--info" role="status" hidden></div>
+
+        <label class="campo">
+          <span class="campo__etiqueta">Correo electrónico</span>
+          <input id="correo" class="campo__entrada" type="email" autocomplete="username" required>
+        </label>
+
+        <label class="campo">
+          <span class="campo__etiqueta">Contraseña</span>
+          <span class="campo__fila">
+            <input id="contrasena" class="campo__entrada" type="password" autocomplete="current-password" required>
+            <button id="btnMostrar" class="campo__accion" type="button" aria-pressed="false">Mostrar</button>
+          </span>
+        </label>
+
+        <button id="btnIngresar" class="boton boton--primario" type="submit">Iniciar sesión</button>
+        <p class="formulario__pie">
+          <button id="btnOlvido" class="enlace" type="button">¿Olvidó su contraseña?</button>
+        </p>
+      </form>
+
+      <form id="formRecuperar" class="formulario" novalidate hidden>
+        <h1 class="formulario__titulo">Recuperar contraseña</h1>
+        <p class="formulario__descripcion">Escriba su correo y le enviaremos un enlace para crear una nueva contraseña.</p>
+
+        <div id="avisoRecuperar" class="aviso" role="status" hidden></div>
+
+        <label class="campo">
+          <span class="campo__etiqueta">Correo electrónico</span>
+          <input id="correoRecuperar" class="campo__entrada" type="email" autocomplete="username" required>
+        </label>
+
+        <button id="btnEnviarEnlace" class="boton boton--primario" type="submit">Enviar enlace</button>
+        <p class="formulario__pie">
+          <button id="btnVolver" class="enlace" type="button">Volver a iniciar sesión</button>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>
