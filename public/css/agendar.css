@@ -378,3 +378,6 @@ textarea.form-control {
 .consentimiento a { color: var(--purple-700); text-decoration: underline; text-underline-offset: 2px; }
 .consentimiento input:focus-visible,
 .consentimiento a:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+
+/* "Hora preferida" se habilita al elegir un día con consulta */
+.form-control:disabled { opacity: 0.6; cursor: not-allowed; }
