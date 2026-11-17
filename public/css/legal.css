@@ -64,3 +64,11 @@
   .legal .section-eyebrow { font-size: 0.7rem; }
   .navbar .navbar__specialty { display: none; }
 }
+.legal h3 {
+  margin: 1.25rem 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--purple-900);
+}
+/* Los enlaces a un apartado (por ejemplo, privacidad.html#comentarios) no quedan bajo el encabezado fijo */
+.legal [id] { scroll-margin-top: 6rem; }

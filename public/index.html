@@ -389,6 +389,62 @@
           </div>
 
         </div>
+
+        <!-- Comentarios de pacientes: se guardan como pendientes y se publican solo si el doctor los aprueba (js/comentarios.js) -->
+        <div class="opinion">
+          <div class="opinion__intro">
+            <h3 class="opinion__title">¿Fuiste paciente del doctor?</h3>
+            <p class="opinion__text">Comparte tu experiencia. Tu comentario se publicará cuando el doctor lo revise y lo apruebe.</p>
+            <button id="abrirOpinion" type="button" class="btn btn--outline" aria-expanded="false" aria-controls="formOpinion">Escribir mi opinión</button>
+          </div>
+
+          <form id="formOpinion" class="opinion__form" novalidate hidden>
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="opinionNombre">Nombre *</label>
+                <input class="form-control" id="opinionNombre" name="nombre" type="text" autocomplete="given-name" required minlength="2" maxlength="40" data-solo-letras pattern="\s*[A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ][A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ ]*" title="Escribe tu nombre solo con letras; se permiten acentos, ñ, diéresis y espacios." />
+              </div>
+              <div>
+                <label class="form-label" for="opinionApellido">Apellido *</label>
+                <input class="form-control" id="opinionApellido" name="apellido" type="text" autocomplete="family-name" required minlength="2" maxlength="40" data-solo-letras pattern="\s*[A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ][A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ ]*" title="Escribe tu apellido solo con letras; se permiten acentos, ñ, diéresis y espacios." />
+              </div>
+            </div>
+
+            <fieldset class="opinion__valoracion">
+              <legend class="form-label">Valoración *</legend>
+              <div class="estrellas">
+                <input id="estrella1" type="radio" name="valoracion" value="1" required /><label for="estrella1"><span aria-hidden="true">★</span><span class="solo-lectores">1 de 5 estrellas</span></label>
+                <input id="estrella2" type="radio" name="valoracion" value="2" /><label for="estrella2"><span aria-hidden="true">★</span><span class="solo-lectores">2 de 5 estrellas</span></label>
+                <input id="estrella3" type="radio" name="valoracion" value="3" /><label for="estrella3"><span aria-hidden="true">★</span><span class="solo-lectores">3 de 5 estrellas</span></label>
+                <input id="estrella4" type="radio" name="valoracion" value="4" /><label for="estrella4"><span aria-hidden="true">★</span><span class="solo-lectores">4 de 5 estrellas</span></label>
+                <input id="estrella5" type="radio" name="valoracion" value="5" /><label for="estrella5"><span aria-hidden="true">★</span><span class="solo-lectores">5 de 5 estrellas</span></label>
+              </div>
+            </fieldset>
+
+            <div>
+              <label class="form-label" for="opinionComentario">Tu comentario *</label>
+              <textarea class="form-control" id="opinionComentario" name="comentario" rows="4" required minlength="10" maxlength="500" placeholder="Cuéntanos cómo fue tu atención"></textarea>
+              <p id="opinionContador" class="opinion__ayuda">0 de 500 caracteres</p>
+            </div>
+
+            <!-- Campo trampa para programas automáticos: las personas no lo ven ni lo llenan -->
+            <div class="opinion__trampa" aria-hidden="true">
+              <label for="opinionSitio">No llenes este campo</label>
+              <input id="opinionSitio" name="sitio" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="consentimiento">
+              <input id="opinionAutoriza" name="autoriza" type="checkbox" required />
+              <label for="opinionAutoriza">
+                Autorizo el tratamiento de los datos de este formulario, incluida la información sobre mi salud que mencione, y que mi nombre, apellido, valoración y comentario se publiquen en este sitio si el doctor lo aprueba. Acepto el <a href="privacidad.html#comentarios" target="_blank" rel="noopener">aviso de privacidad</a> y los <a href="terminos.html#testimonios" target="_blank" rel="noopener">términos de uso</a>. *
+              </label>
+            </div>
+            <p class="opinion__ayuda">No incluyas diagnósticos, teléfonos ni otros datos que no quieras hacer públicos.</p>
+
+            <button id="enviarOpinion" type="submit" class="btn btn--primary opinion__enviar">Enviar comentario</button>
+          </form>
+          <p id="estadoOpinion" class="opinion__estado" role="status" aria-live="polite" tabindex="-1" hidden></p>
+        </div>
       </div>
     </section>
         <!-- AGENDAR CITA -->
@@ -452,7 +508,7 @@
 
             <div>
               <label class="form-label" for="nombre">Nombre del paciente *</label>
-              <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Tu nombre completo" required />
+              <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Tu nombre completo" autocomplete="name" required maxlength="60" data-solo-letras pattern="\s*[A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ][A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ ]*" title="Escribe tu nombre solo con letras; se permiten acentos, ñ, diéresis y espacios." />
             </div>
 
             <div class="form-row">
@@ -490,7 +546,7 @@
             <div class="consentimiento">
               <input id="consentimiento" name="consentimiento" type="checkbox" required />
               <label for="consentimiento">
-                Acepto el <a href="privacidad.html" target="_blank" rel="noopener">aviso de privacidad</a> y consiento
+                Acepto el <a href="privacidad.html#citas" target="_blank" rel="noopener">aviso de privacidad</a> y consiento
                 el uso de mis datos, incluido el motivo de consulta, para agendar mi cita. *
               </label>
             </div>
@@ -576,7 +632,10 @@
   <script src="js/main.js"></script>
   <!-- Formulario de agendado (no depende de Firebase) y contenido dinámico desde sitio/publicado -->
   <script type="module" src="js/agendar.js"></script>
+  <script type="module" src="js/solo-letras.js"></script>
+  <script type="module" src="js/carrusel.js"></script>
   <script type="module" src="js/landing.js"></script>
+  <script type="module" src="js/comentarios.js"></script>
 </body>
 
 </html>

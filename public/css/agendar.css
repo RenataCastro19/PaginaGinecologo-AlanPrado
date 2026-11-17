@@ -403,3 +403,11 @@ textarea.form-control {
 
 /* "Hora preferida" se habilita al elegir un día con consulta */
 .form-control:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Aviso breve cuando se escribe un carácter no permitido en un campo de nombre (js/solo-letras.js) */
+.aviso-letras {
+  margin-top: 0.4rem;
+  color: #991b1b;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}

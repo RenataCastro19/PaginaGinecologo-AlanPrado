@@ -39,46 +39,81 @@
       </p>
 
       <h2>2. Datos personales que se tratan</h2>
-      <p>Cuando usted utiliza el formulario «Agenda tu cita», se recaban los siguientes datos:</p>
+      <p>Este sitio cuenta con dos formularios. Cada uno trata datos distintos:</p>
+
+      <h3 id="citas">2.1 Solicitud de cita (formulario «Agenda tu cita»)</h3>
       <ul>
         <li>Nombre del paciente.</li>
         <li>Día y hora preferidos para la consulta.</li>
         <li>Motivo de consulta y, en su caso, la descripción que usted escriba.</li>
         <li>Su número de teléfono y nombre de perfil de WhatsApp, que el doctor recibe al llegarle su mensaje.</li>
       </ul>
+
+      <h3 id="comentarios">2.2 Comentarios sobre su experiencia (formulario «¿Fuiste paciente del doctor?»)</h3>
+      <ul>
+        <li>Nombre y apellido.</li>
+        <li>Valoración de 1 a 5 estrellas.</li>
+        <li>El comentario que usted escriba.</li>
+        <li>La fecha y hora de envío, y el registro de que usted autorizó la publicación.</li>
+      </ul>
+      <p>Este formulario no solicita teléfono, correo electrónico ni ningún otro dato de contacto.</p>
+
       <p>
-        <strong>Datos personales sensibles.</strong> El motivo de consulta y la descripción pueden revelar información sobre su
-        estado de salud, que la ley considera un dato sensible. Por ello, el formulario solicita su consentimiento expreso
-        antes de enviarlos. Le pedimos compartir únicamente la información necesaria para agendar su cita.
+        <strong>Datos personales sensibles.</strong> El motivo de consulta, así como lo que usted escriba en un comentario
+        (por ejemplo, que fue atendida durante su embarazo), puede revelar información sobre su estado de salud, que la ley
+        considera un dato sensible. Por ello, ambos formularios solicitan su consentimiento expreso antes de enviar la
+        información. Le pedimos compartir únicamente lo necesario y no incluir en su comentario diagnósticos, tratamientos ni
+        datos de otras personas.
       </p>
 
       <h2>3. Cómo se recaban y dónde se conservan</h2>
       <p>
-        Este sitio <strong>no guarda</strong> los datos que usted escribe en el formulario: al presionar «Enviar por WhatsApp»,
-        su navegador abre WhatsApp con un mensaje precargado, y usted decide si lo envía desde su propia cuenta. Los datos
-        llegan únicamente a la conversación de WhatsApp del consultorio.
+        <strong>Solicitud de cita.</strong> Este sitio <strong>no guarda</strong> los datos que usted escribe en el formulario
+        «Agenda tu cita»: al presionar «Enviar por WhatsApp», su navegador abre WhatsApp con un mensaje precargado, y usted
+        decide si lo envía desde su propia cuenta. Los datos llegan únicamente a la conversación de WhatsApp del consultorio.
+        WhatsApp es un servicio de Meta Platforms, Inc., sujeto a sus propios términos y aviso de privacidad, que usted acepta
+        directamente al usar esa aplicación.
       </p>
       <p>
-        WhatsApp es un servicio de Meta Platforms, Inc., sujeto a sus propios términos y aviso de privacidad, que usted
-        acepta directamente al usar esa aplicación.
+        <strong>Comentarios.</strong> Al presionar «Enviar comentario», sus datos se guardan en la base de datos del sitio
+        (Cloud Firestore, servicio de Google LLC, con servidores ubicados en México) como un comentario
+        <strong>pendiente de revisión</strong>. Mientras está pendiente, nadie fuera del panel de administración del doctor puede
+        verlo. Después de revisarlo, el doctor puede:
+      </p>
+      <ul>
+        <li><strong>Aprobarlo:</strong> su nombre, apellido, valoración y comentario se publicarán en la sección Testimonios del
+          sitio, a la vista de cualquier visitante. La fecha de envío y el registro de su autorización no se publican.</li>
+        <li><strong>Rechazarlo:</strong> el comentario se elimina de la base de datos y no se publica.</li>
+      </ul>
+      <p>
+        Un testimonio aprobado permanece publicado mientras el doctor lo mantenga en el sitio o hasta que usted revoque su
+        consentimiento. Cada vez que el sitio se actualiza, se conserva una copia interna del contenido publicado, de acceso
+        exclusivo del responsable, como registro de las versiones del sitio; esas copias también se eliminan cuando usted lo
+        solicita conforme a la sección 6.
       </p>
 
       <h2>4. Finalidades del tratamiento</h2>
-      <p>Sus datos se utilizan para las siguientes finalidades, necesarias para la relación con usted:</p>
+      <p>Sus datos se utilizan exclusivamente para las siguientes finalidades:</p>
       <ul>
         <li>Recibir y responder su solicitud de cita.</li>
         <li>Confirmar, reprogramar o cancelar la cita.</li>
         <li>Preparar la atención de acuerdo con el motivo de consulta.</li>
+        <li>Revisar su comentario y, si usted lo autorizó y el doctor lo aprueba, publicarlo como testimonio en este sitio.</li>
       </ul>
       <p>
-        No se utilizan para fines publicitarios, de mercadotecnia ni de prospección comercial, y no se venden ni se ceden a
-        terceros.
+        No se utilizan para fines publicitarios distintos de la publicación del testimonio que usted autorice, ni para
+        mercadotecnia o prospección comercial, y no se venden ni se ceden a terceros.
       </p>
 
       <h2>5. Transferencias</h2>
       <p>
         Sus datos no se transfieren a terceros, salvo en los casos en que la ley lo permita sin su consentimiento, como el
-        cumplimiento de un requerimiento de autoridad competente.
+        cumplimiento de un requerimiento de autoridad competente. Los proveedores tecnológicos que alojan el sitio y su base de
+        datos (sección 7) solo almacenan la información por cuenta del responsable y no la utilizan para fines propios.
+      </p>
+      <p>
+        La publicación de su testimonio en el sitio es una difusión que usted autoriza expresamente al marcar la casilla
+        correspondiente del formulario de comentarios.
       </p>
 
       <h2>6. Derechos ARCO y revocación del consentimiento</h2>
@@ -87,6 +122,11 @@
         <strong>cancelarlos</strong> cuando considere que no se requieren para las finalidades señaladas y
         <strong>oponerse</strong> a su tratamiento (derechos ARCO). También puede revocar en cualquier momento el
         consentimiento que haya otorgado y limitar el uso o divulgación de sus datos.
+      </p>
+      <p>
+        En particular, puede pedir en cualquier momento que su testimonio <strong>se retire del sitio</strong> o que se corrija
+        el nombre con el que aparece. El retiro se hará efectivo en la página pública y en las copias internas mencionadas en la
+        sección 3.
       </p>
       <p>Para ejercer estos derechos, envíe su solicitud por alguno de estos medios:</p>
       <ul>
@@ -97,7 +137,8 @@
       <ul>
         <li>Su nombre y un medio para comunicarle la respuesta.</li>
         <li>Un documento que acredite su identidad o, en su caso, la de su representante legal.</li>
-        <li>La descripción clara de los datos y del derecho que desea ejercer.</li>
+        <li>La descripción clara de los datos y del derecho que desea ejercer (por ejemplo, el texto o la fecha del testimonio que
+          desea retirar).</li>
       </ul>
       <p>
         Recibirá respuesta en un plazo máximo de 20 días hábiles a partir de la recepción de su solicitud. Si resulta
@@ -110,14 +151,19 @@
         servicios de terceros que pueden registrar datos técnicos de su conexión, como la dirección IP:
       </p>
       <ul>
-        <li>Firebase (Google LLC): alojamiento del sitio y del contenido que se muestra.</li>
+        <li>Firebase (Google LLC): alojamiento del sitio, del contenido que se muestra y de los comentarios enviados.</li>
         <li>Google Fonts (Google LLC): tipografías.</li>
         <li>Cloudinary: alojamiento de algunas fotografías.</li>
       </ul>
+      <p>
+        Para evitar envíos repetidos, el formulario de comentarios guarda en su navegador (almacenamiento local) únicamente la
+        fecha y hora de su último envío. Este dato no incluye información personal, no se envía a ningún servidor y puede
+        borrarlo desde la configuración de su navegador.
+      </p>
 
       <h2>8. Cambios a este aviso</h2>
       <p>
-        Este aviso puede modificarse por cambios legales o en la forma de atender las solicitudes de cita. Cualquier cambio se
+        Este aviso puede modificarse por cambios legales, en la forma de atender las solicitudes de cita o en el tratamiento de los comentarios. Cualquier cambio se
         publicará en esta misma página, con la fecha de última actualización.
       </p>
 

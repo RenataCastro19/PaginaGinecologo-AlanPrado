@@ -3,6 +3,7 @@
 // Cada sección se procesa por separado; un dato con problemas en una sección no afecta a las demás.
 // Todo texto que viene de Firestore se inserta con textContent (nunca como HTML).
 import { db, doc, getDoc } from "./firebase-config.js";
+import { prepararCarrusel } from "./carrusel.js";
 
 const $ = (selector, raiz = document) => raiz.querySelector(selector);
 const $$ = (selector, raiz = document) => [...raiz.querySelectorAll(selector)];
@@ -171,7 +172,12 @@ function aplicarSobreMi(info = {}, experiencia, galeria = []) {
 
 function aplicarTestimonios(testimonios) {
   const lista = ordenar(testimonios).filter(visible).filter((t) => texto(t.comentario));
-  if (!lista.length) { ocultarSeccion("testimonios"); return; }
+  // Sin testimonios visibles se ocultan el título y las tarjetas, pero la sección se queda
+  // para que las pacientes puedan enviar su comentario (js/comentarios.js)
+  const sinTestimonios = !lista.length;
+  $(".testimonials__header").hidden = sinTestimonios;
+  $(".testimonials__grid").hidden = sinTestimonios;
+  if (sinTestimonios) { $(".testimonials__grid")._carrusel?.destruir(); return; }
   $(".testimonials__grid").dataset.cantidad = lista.length;
   $(".testimonials__grid").replaceChildren(...lista.map((t) => {
     const tarjeta = crear("div", "testimonial");
@@ -187,6 +193,8 @@ function aplicarTestimonios(testimonios) {
     tarjeta.append(estrellas, crear("p", "testimonial__text", `"${t.comentario}"`), autora);
     return tarjeta;
   }));
+  // Con 3 o más testimonios se muestran en carrusel; con menos, en cuadrícula (js/carrusel.js)
+  prepararCarrusel($(".testimonials__grid"));
 }
 
 // Datos de contacto en "Agenda tu cita" (ubicación, teléfono, horario)

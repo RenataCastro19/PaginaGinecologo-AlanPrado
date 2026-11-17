@@ -38,6 +38,11 @@
           </div>
         </section>
 
+        <a id="avisoComentarios" class="aviso aviso--pendiente aviso-enlace" href="testimonios.html#por-aprobar" hidden>
+          <span id="avisoComentariosTitulo" class="aviso__titulo"></span>
+          <span>Revísalos en Testimonios. No aparecen en tu página hasta que los apruebes y publiques.</span>
+        </a>
+
         <div class="indicadores">
           <a class="tarjeta indicador acceso-indicador" href="servicios.html" style="text-decoration: none; color: inherit">
             <span id="numServicios" class="indicador__valor"></span>
@@ -117,6 +122,7 @@
   <script type="module">
     import { iniciarPanel, escaparHTML } from "./js/layout.js";
     import { leerPublicado, seccionesConCambios, formatearFecha } from "./js/borrador.js";
+    import { leerComentarios } from "./js/moderacion.js";
 
     const { administrador, borrador } = await iniciarPanel("inicio");
     const $ = (id) => document.getElementById(id);
@@ -158,6 +164,15 @@
     $("numTestimonios").textContent = testimoniosActivos.length;
     const sinConsentimiento = testimoniosActivos.filter((t) => !t.consentimiento).length;
     $("detalleTestimonios").textContent = sinConsentimiento ? `${sinConsentimiento} sin consentimiento registrado` : "Con consentimiento registrado";
+
+    // ---- Comentarios por aprobar (enviados desde la página pública) ----
+    leerComentarios().then((lista) => {
+      if (!lista.length) return;
+      $("avisoComentariosTitulo").textContent = lista.length === 1
+        ? "Tienes 1 comentario por aprobar"
+        : `Tienes ${lista.length} comentarios por aprobar`;
+      $("avisoComentarios").hidden = false;
+    }).catch((error) => console.error("No se pudieron leer los comentarios:", error));
 
     // ---- Por completar ----
     const contacto = borrador.contacto || {}, horarios = borrador.horarios || {};

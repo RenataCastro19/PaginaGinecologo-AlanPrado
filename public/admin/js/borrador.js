@@ -269,9 +269,16 @@ export function controlarFormulario({ formulario, seccion, valorInicial, rellena
     }
   });
 
+  // Para escrituras hechas fuera de guardar() (por ejemplo, aprobar un comentario en un lote junto
+  // con otra operación): toma ese valor como lo guardado y muestra el estado "guardado".
+  function marcarGuardado(valor) {
+    original = structuredClone(valor);
+    fijarEstado("guardado");
+  }
+
   rellenarYAjustar(structuredClone(original));
   fijarEstado("limpio");
 
   // Para pantallas que guardan al instante (listas con editor): control.guardar()
-  return { revisar, hayCambios, guardar };
+  return { revisar, hayCambios, guardar, marcarGuardado };
 }

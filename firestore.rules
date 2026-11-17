@@ -33,6 +33,39 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Comentarios que envían las pacientes desde la página pública.
+    // El público solo puede crearlos, siempre como pendientes, y no puede leerlos.
+    // El panel los lee y los borra al aprobarlos (el contenido pasa al borrador) o al rechazarlos.
+    match /comentarios/{comentarioId} {
+      allow create: if comentarioValido(request.resource.data);
+      allow read, delete: if esAdmin();
+      allow update: if false;
+    }
+
+    // Texto con un mínimo de caracteres sin contar espacios y un máximo total
+    function textoValido(valor, minimo, maximo) {
+      return valor is string && valor.size() <= maximo && valor.trim().size() >= minimo;
+    }
+
+    // Nombre o apellido: solo letras (a-z, A-Z, ñ, vocales con acento o diéresis) separadas por un espacio.
+    // Es la misma regla de public/js/solo-letras.js; el formulario quita los espacios sobrantes antes de enviar.
+    function nombreValido(valor) {
+      return textoValido(valor, 2, 40)
+        && valor.matches('^[A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÄËÏÖÜäëïöüÑñ]+)*$');
+    }
+
+    function comentarioValido(d) {
+      return d.keys().hasOnly(['nombre', 'apellido', 'valoracion', 'comentario', 'autorizaPublicacion', 'estado', 'creadoEn'])
+        && d.keys().hasAll(['nombre', 'apellido', 'valoracion', 'comentario', 'autorizaPublicacion', 'estado', 'creadoEn'])
+        && nombreValido(d.nombre)
+        && nombreValido(d.apellido)
+        && d.valoracion is int && d.valoracion >= 1 && d.valoracion <= 5
+        && textoValido(d.comentario, 10, 500)
+        && d.autorizaPublicacion == true
+        && d.estado == 'pendiente'
+        && d.creadoEn == request.time;
+    }
+
     // Cualquier otra ruta queda bloqueada por omisión
   }
 }

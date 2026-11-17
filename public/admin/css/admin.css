@@ -662,6 +662,21 @@ select.campo__entrada { appearance: none; cursor: pointer; }
 .testimonio--inactivo .testimonio__texto { opacity: .55; }
 .lista-tarjetas { display: grid; gap: 16px; margin-top: 20px; }
 
+/* Comentarios por aprobar (enviados desde la página pública) */
+.moderacion { margin-top: 20px; }
+.moderacion__cabecera { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 16px; }
+.moderacion .aviso { margin-top: 16px; }
+.moderacion .lista-tarjetas { margin-top: 16px; }
+.moderacion__nota { margin-top: 16px; }
+.comentario-pendiente { background: #fff; border-color: var(--purple-200); }
+a.insignia { text-decoration: none; }
+a.insignia:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+
+/* Aviso del Inicio que lleva a Testimonios */
+.aviso-enlace { display: grid; gap: 2px; margin-top: 16px; text-decoration: none; }
+.aviso-enlace:hover { filter: brightness(0.97); }
+.aviso-enlace:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+
 /* Diálogos (editor y confirmación) */
 .dialogo {
   width: min(560px, calc(100vw - 32px));

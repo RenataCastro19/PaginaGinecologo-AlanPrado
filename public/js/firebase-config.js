@@ -39,6 +39,11 @@ export {
   getDoc,
   setDoc,
   updateDoc,
+  addDoc,
+  deleteDoc,
+  getDocs,
+  query,
+  orderBy,
   writeBatch,
   collection,
   serverTimestamp

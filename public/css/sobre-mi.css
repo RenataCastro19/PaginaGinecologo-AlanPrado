@@ -185,9 +185,182 @@
   line-height: 1rem;
 }
 
+/* ---------- Comentarios de pacientes (js/comentarios.js) ---------- */
+.opinion {
+  max-width: 40rem;
+  margin: 3.5rem auto 0;
+  padding: 2rem;
+  background: #ffffff;
+  border: 1px solid var(--purple-100);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -15px rgba(59, 7, 100, 0.25);
+}
+.opinion__intro { text-align: center; }
+.opinion__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: var(--purple-950);
+  margin-bottom: 0.5rem;
+}
+.opinion__text {
+  color: var(--purple-700);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+.opinion .btn { font-family: inherit; font-size: 1rem; }
+.opinion__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--purple-100);
+}
+.opinion__form textarea.form-control { min-height: 7.5rem; }
+.opinion__ayuda {
+  margin-top: 0.4rem;
+  color: var(--purple-700);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.opinion__enviar { width: 100%; }
+.opinion__enviar:disabled { opacity: 0.7; cursor: progress; }
+
+/* Valoración con estrellas: radios nativos (accesibles con teclado) dibujados como estrellas */
+.opinion__valoracion { border: 0; min-width: 0; }
+.estrellas { position: relative; display: flex; gap: 0.25rem; }
+.estrellas input {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.estrellas label {
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.15rem;
+  color: var(--purple-200);
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: color 0.15s;
+}
+.estrellas input:focus-visible + label { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+/* Pinta hasta la estrella elegida y, al pasar el cursor, hasta la que está debajo */
+.estrellas:has(#estrella1:checked) label:nth-of-type(-n+1),
+.estrellas:has(#estrella2:checked) label:nth-of-type(-n+2),
+.estrellas:has(#estrella3:checked) label:nth-of-type(-n+3),
+.estrellas:has(#estrella4:checked) label:nth-of-type(-n+4),
+.estrellas:has(#estrella5:checked) label:nth-of-type(-n+5) { color: var(--purple-600); }
+@media (hover: hover) {
+  .estrellas:has(label:nth-of-type(1):hover) label:nth-of-type(-n+1),
+  .estrellas:has(label:nth-of-type(2):hover) label:nth-of-type(-n+2),
+  .estrellas:has(label:nth-of-type(3):hover) label:nth-of-type(-n+3),
+  .estrellas:has(label:nth-of-type(4):hover) label:nth-of-type(-n+4),
+  .estrellas:has(label:nth-of-type(5):hover) label:nth-of-type(-n+5) { color: var(--purple-500); }
+}
+
+/* Campo trampa: fuera de la vista y del orden de tabulación */
+.opinion__trampa { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+.solo-lectores {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.opinion__estado {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  text-align: center;
+}
+.opinion__estado:focus { outline: none; }
+.opinion__estado--exito { background: #ecfdf3; color: #166534; }
+.opinion__estado--error { background: #fef2f2; color: #991b1b; }
+.opinion__estado--info { background: var(--purple-50); color: var(--purple-800); }
+
+.opinion .btn:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; }
+
+@media (max-width: 479px) {
+  .opinion { padding: 1.5rem 1.25rem; border-radius: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .estrellas label { transition: none; }
+}
+
 /* ================= RESPONSIVE ================= */
 @media (min-width: 768px) {
   .about__inner { grid-template-columns: 1fr 1fr; }
   .testimonials__title { font-size: 3rem; line-height: 1; }
   .testimonials__grid { grid-template-columns: repeat(3, 1fr); }
+}
+/* ---------- Carrusel de testimonios (js/carrusel.js; 3 o más tarjetas) ---------- */
+.testimonials__grid.testimonials__grid--carrusel {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  border-radius: 1.5rem;
+}
+.testimonials__grid--carrusel::-webkit-scrollbar { display: none; }
+.testimonials__grid--carrusel > .testimonial { scroll-snap-align: start; }
+.testimonials__grid--carrusel:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 4px; }
+
+.carrusel__controles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+.carrusel__boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--purple-200);
+  background: #ffffff;
+  color: var(--purple-700);
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+}
+.carrusel__boton:hover:not(:disabled) { background: var(--purple-50); border-color: var(--purple-300); }
+.carrusel__boton:disabled { opacity: 0.35; cursor: default; }
+.carrusel__puntos { display: flex; align-items: center; gap: 0.25rem; }
+.carrusel__punto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.carrusel__punto::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--purple-200);
+  transition: width 0.2s, background 0.2s;
+}
+.carrusel__punto[aria-current="true"]::before { width: 1.25rem; background: var(--purple-600); }
+.carrusel__boton:focus-visible,
+.carrusel__punto:focus-visible { outline: 2px solid var(--purple-600); outline-offset: 2px; border-radius: 9999px; }
+
+@media (min-width: 768px) {
+  .testimonials__grid.testimonials__grid--carrusel { grid-auto-columns: calc((100% - 1.5rem) / 2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .testimonials__grid.testimonials__grid--carrusel { scroll-behavior: auto; }
+  .carrusel__punto::before { transition: none; }
 }

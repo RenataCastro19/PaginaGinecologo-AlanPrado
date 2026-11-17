@@ -30,6 +30,7 @@
         <div class="contadores">
           <span id="contadorTotal" class="insignia insignia--marca"></span>
           <span id="contadorInactivos" class="insignia insignia--marca"></span>
+          <a id="contadorPorAprobar" class="insignia insignia--pendiente" href="#por-aprobar" hidden></a>
           <span class="nota">Cada cambio se guarda en el borrador al momento.</span>
         </div>
 
@@ -37,6 +38,20 @@
           <p class="aviso__titulo" data-aviso-titulo></p>
           <p data-aviso-texto></p>
         </div>
+
+        <!-- Comentarios enviados desde la página pública (js/moderacion.js) -->
+        <section id="por-aprobar" class="tarjeta moderacion" aria-labelledby="tituloPorAprobar">
+          <div class="moderacion__cabecera">
+            <div>
+              <h2 id="tituloPorAprobar" class="tarjeta__titulo">Por aprobar</h2>
+              <p class="tarjeta__subtitulo">Comentarios que tus pacientes enviaron desde la página. No se publican hasta que los apruebes.</p>
+            </div>
+            <span id="insigniaPorAprobar" class="insignia">Cargando…</span>
+          </div>
+          <div id="avisoModeracion" class="aviso" role="status" hidden></div>
+          <div id="listaPorAprobar" class="lista-tarjetas"></div>
+          <p class="nota moderacion__nota">Al aprobar, el comentario pasa a tu lista de testimonios como activo y con el consentimiento registrado. Aparecerá en tu página cuando publiques los cambios desde Revisar y publicar.</p>
+        </section>
 
         <form id="formulario" novalidate>
           <div class="filtros tarjeta" style="margin-top: 20px">
@@ -152,6 +167,7 @@
     import { iniciarPanel, escaparHTML } from "./js/layout.js";
     import { controlarFormulario } from "./js/borrador.js";
     import { nuevoId, ordenar, renumerar, abrirEditor, confirmarEliminacion, iniciales, estrellas, ICONO_CERRAR } from "./js/listas.js";
+    import { leerComentarios, aprobarComentario, rechazarComentario, aTestimonio, fechaEnvio, nombreCompleto } from "./js/moderacion.js";
 
     const { borrador } = await iniciarPanel("testimonios");
     const $ = (id) => document.getElementById(id);
@@ -287,6 +303,117 @@
       });
     }
     $("agregarTestimonio").addEventListener("click", () => editar(null));
+
+    // ---- Por aprobar: comentarios enviados desde la página pública ----
+    let pendientes = [];
+
+    function avisoModeracion(texto, tipo) {
+      $("avisoModeracion").textContent = texto;
+      $("avisoModeracion").className = `aviso aviso--${tipo}`;
+      $("avisoModeracion").hidden = !texto;
+    }
+
+    function dibujarPendientes() {
+      const n = pendientes.length;
+      $("insigniaPorAprobar").textContent = n ? plural(n, "pendiente", "pendientes") : "Al día";
+      $("insigniaPorAprobar").className = `insignia ${n ? "insignia--pendiente" : "insignia--exito"}`;
+      $("contadorPorAprobar").textContent = `${plural(n, "comentario", "comentarios")} por aprobar`;
+      $("contadorPorAprobar").hidden = n === 0;
+      $("listaPorAprobar").innerHTML = n === 0
+        ? '<p class="nota">No hay comentarios por aprobar.</p>'
+        : pendientes.map((c) => {
+          const nombre = nombreCompleto(c);
+          const valoracion = Number(c.valoracion) || 0;
+          return `
+          <article class="tarjeta testimonio comentario-pendiente" data-comentario="${escaparHTML(c.id)}">
+            <div class="testimonio__cabecera">
+              <div class="testimonio__autora">
+                <span class="avatar" aria-hidden="true">${escaparHTML(iniciales(nombre))}</span>
+                <div>
+                  <p class="testimonio__nombre">${escaparHTML(nombre)}</p>
+                  <p class="testimonio__edad">${fechaEnvio(c) ? `Enviado el ${escaparHTML(fechaEnvio(c))}` : "Enviado recientemente"}</p>
+                </div>
+              </div>
+              <button class="boton boton--primario" type="button" data-moderar="aprobar" aria-label="Aprobar el comentario de ${escaparHTML(nombre)}">Aprobar</button>
+              <button class="boton boton--blanco" type="button" data-moderar="rechazar" aria-label="Rechazar el comentario de ${escaparHTML(nombre)}">Rechazar</button>
+            </div>
+            <p class="testimonio__estrellas">${estrellas(valoracion)} <span>${valoracion} de 5 estrellas</span></p>
+            <p class="testimonio__texto">${escaparHTML(c.comentario)}</p>
+          </article>`;
+        }).join("");
+    }
+
+    async function cargarPendientes() {
+      try {
+        pendientes = await leerComentarios();
+        dibujarPendientes();
+      } catch (error) {
+        console.error("No se pudieron leer los comentarios:", error);
+        $("insigniaPorAprobar").textContent = "Sin datos";
+        $("insigniaPorAprobar").className = "insignia insignia--pendiente";
+        $("listaPorAprobar").innerHTML = "";
+        avisoModeracion("No se pudieron cargar los comentarios por aprobar. Revisa tu conexión y recarga la página.", "error");
+      }
+      if (location.hash === "#por-aprobar") $("por-aprobar").scrollIntoView();
+    }
+
+    async function aprobar(c, botones) {
+      // Si quedó un cambio de la lista sin guardar, se guarda antes para que el lote parta de lo guardado
+      if (control.hayCambios() && !(await control.guardar())) {
+        avisoModeracion("No se pudo aprobar porque hay cambios sin guardar. Revisa tu conexión e intenta de nuevo.", "error");
+        return;
+      }
+      const lista = [...structuredClone(testimonios), aTestimonio(c, testimonios.length + 1)];
+      botones.forEach((b) => { b.disabled = true; });
+      try {
+        await aprobarComentario(c.id, lista);
+        testimonios = lista;
+        control.marcarGuardado(lista);
+        dibujar();
+        pendientes = pendientes.filter((x) => x.id !== c.id);
+        dibujarPendientes();
+        avisoModeracion(`Se agregó el testimonio de ${nombreCompleto(c)}. Aparecerá en tu página cuando publiques los cambios.`, "exito");
+      } catch (error) {
+        console.error("No se pudo aprobar el comentario:", error);
+        botones.forEach((b) => { b.disabled = false; });
+        avisoModeracion("No se pudo aprobar el comentario. Revisa tu conexión e intenta de nuevo.", "error");
+      }
+    }
+
+    async function rechazar(c, botones) {
+      const confirmado = await confirmarEliminacion({
+        titulo: "¿Rechazar este comentario?",
+        nombre: nombreCompleto(c),
+        mensaje: `El comentario de ${nombreCompleto(c)} se eliminará y no se publicará en tu página.`,
+        nota: "Esta acción no se puede deshacer.",
+        textoBoton: "Rechazar comentario"
+      });
+      if (!confirmado) return;
+      botones.forEach((b) => { b.disabled = true; });
+      try {
+        await rechazarComentario(c.id);
+        pendientes = pendientes.filter((x) => x.id !== c.id);
+        dibujarPendientes();
+        avisoModeracion(`Se rechazó el comentario de ${nombreCompleto(c)}.`, "info");
+      } catch (error) {
+        console.error("No se pudo rechazar el comentario:", error);
+        botones.forEach((b) => { b.disabled = false; });
+        avisoModeracion("No se pudo rechazar el comentario. Revisa tu conexión e intenta de nuevo.", "error");
+      }
+    }
+
+    $("listaPorAprobar").addEventListener("click", (evento) => {
+      const boton = evento.target.closest("[data-moderar]");
+      if (!boton) return;
+      const tarjeta = boton.closest("[data-comentario]");
+      const c = pendientes.find((x) => x.id === tarjeta.dataset.comentario);
+      if (!c) return;
+      const botones = [...tarjeta.querySelectorAll("[data-moderar]")];
+      if (boton.dataset.moderar === "aprobar") aprobar(c, botones);
+      else rechazar(c, botones);
+    });
+
+    cargarPendientes();
   </script>
 </body>
 </html>
