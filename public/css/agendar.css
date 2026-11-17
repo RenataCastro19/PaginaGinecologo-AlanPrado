@@ -141,16 +141,38 @@
 select.form-control {
   appearance: none;
   -webkit-appearance: none;
+  /* Flecha para que se note que es una lista (también en el teléfono) */
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none'%3E%3Cpath d='M3.5 5.25L7 8.75L10.5 5.25' stroke='%237E22CE' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px 14px;
+}
+
+/* La fecha mide lo mismo que los demás campos y no impone un ancho mínimo propio */
+input.form-control, select.form-control { height: 3.25rem; }
+input[type="date"].form-control { min-width: 0; display: block; }
+.form-control::-webkit-date-and-time-value { text-align: left; }
+@supports (-webkit-touch-callout: none) {
+  /* Solo iPhone/iPad: sin el estilo nativo, el campo de fecha respeta el ancho de su columna */
+  input[type="date"].form-control { -webkit-appearance: none; appearance: none; }
 }
 
 textarea.form-control {
   resize: none;
 }
 
+/* Día y hora: uno debajo del otro en teléfono; lado a lado desde 480 px */
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+@media (min-width: 480px) {
+  .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+@media (max-width: 479px) {
+  .booking-card { padding: 1.5rem 1.25rem; border-radius: 1.25rem; }
 }
 
 /* Campo "Otro": se muestra solo con CSS cuando se elige esa opcion */

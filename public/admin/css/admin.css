@@ -840,11 +840,23 @@ select.campo__entrada { appearance: none; cursor: pointer; }
   .lateral__cabecera .lateral__solo-movil { display: inline-block; }
   .lateral__enlace .icono { display: block; }
   .lateral__enlace--activo span::before { content: none; }
-  .lateral__nota { padding: 14px; border-radius: 12px; background: var(--purple-50); }
+  /* "Cerrar sesión" queda fijo al fondo del menú y siempre visible; los enlaces se desplazan encima.
+     100dvh = alto visible real (en iPhone, 100vh incluye la zona bajo la barra del navegador). */
+  .panel__lateral { height: 100vh; height: 100dvh; padding-bottom: 0; overscroll-behavior: contain; }
+  .lateral__pie {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    padding: 12px 4px calc(16px + env(safe-area-inset-bottom));
+    background: #fff;
+    border-top: 1px solid var(--borde);
+  }
+  .lateral__nota { display: none; }
   .lateral__salir {
     width: 100%;
     justify-content: center;
     min-height: 46px;
+    margin-top: 0;
     border: 1px solid var(--purple-200);
     border-radius: 999px;
     font-weight: 600;
